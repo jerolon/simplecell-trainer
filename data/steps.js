@@ -28,7 +28,7 @@ var STEPS = [
     ],
     details: [
       { sub: "1A", title: "Coating Flat-Bottom Plates",
-        // image: "images/step1a-coating.png",
+        image: "images/step1a-coating.png",
         steps: [
         "Add 120 \u00B5L cold dPBS + 0.1% BSA per well (1 well/sample). No bubbles at bottom.",
         "Incubate \u22651 min at 4\u00B0C",
@@ -36,7 +36,7 @@ var STEPS = [
         "Store coated plates at 4\u00B0C until use"
       ]},
       { sub: "1B", title: "CPair Preparation",
-        // image: "images/step1b-cpair.png",
+        image: "images/step1b-cpair.png",
         steps: [
         "Tap tube on bench (never vortex). Pipette at 150 \u00B5L, 10\u00D7 until homogeneous. Avoid warming with hands.",
         "Transfer to 1.5 mL tube: 170 \u00B5L (8-sample kit) or 340 \u00B5L (16-sample kit)",
@@ -46,14 +46,14 @@ var STEPS = [
         "Into pre-coated wells: 20 \u00B5L CPair (PBMCs/Organoids) or 15 \u00B5L CPair + 5 \u00B5L dPBS (Cell Lines)",
         "Cover, store at 4\u00B0C \u2014 do not freeze. Unused washed CPair good for 1 month at 4\u00B0C."
       ]},
-      { sub: "1C", title: "KCB Master Mix Prep", steps: [
+      { sub: "1C", title: "KCB Master Mix Prep", image: "images/step1d-kcb.png", steps: [
         "Quick spin KCB. Mix with pipette at 600 \u00B5L (8) or 900 \u00B5L (16) until homogeneous",
         "KCB is extremely viscous \u2014 pipette VERY slowly. No bubbles! Use reverse pipetting.",
         "Prepare KCB MM: 73.6 \u00B5L KCB + 6.4 \u00B5L 1M DTT per sample. Mix slowly.",
         "Aliquot 80 \u00B5L KCB MM per tube into strip tubes, place on ice"
       ]},
       { sub: "1D", title: "Cell Priming",
-        // image: "images/step1d-workflow.png",
+        image: "images/step1d-workflow.png",
         steps: [
         "Cells: 250 cells/\u00B5L (cell lines, 5K total), 425/\u00B5L (PBMCs, 8.5K), 500/\u00B5L (organoids, 10K) in 20 \u00B5L dPBS+0.04% BSA",
         "Reconstitute CPM: +200 \u00B5L ice-cold dPBS \u2192 vortex 30s \u2192 quick spin = 6\u00D7 CPM",
