@@ -248,5 +248,154 @@ var REAGENT_DB = {
     image: "images/CSGenminus20.jpeg",
     handling: ["2 \u00B5L/sample in Amp PCR MM", "Only used in PCR1 (NOT in PCR2)"],
     usedIn: [10]
-  }
+  },
+  // ─── Prepared Buffers & Master Mixes ─────────────────────────────
+  // These aren't raw kit reagents — they're what you prepare during the protocol.
+  // No box or image since you make them fresh each time.
+
+  "KCB MM": {
+    fullName: "Kinetic Confinement Buffer Master Mix",
+    box: "Prepared fresh (Step 1C)", capColor: "Made from KCB + DTT",
+    handling: [
+      "Prepare on ice",
+      "KCB is extremely viscous — mix by pipette VERY slowly",
+      "Use reverse pipetting to avoid bubbles",
+      "No visible refraction when properly mixed",
+      "Aliquot 80 µL per sample into strip tubes on ice"
+    ],
+    scaling: {
+      title: "KCB MM Recipe",
+      cols: ["Component", "1 sample", "1 + 25%", "8 + 25%", "16 + 25%"],
+      rows: [
+        ["KCB",     "73.6 µL", "92 µL",   "736 µL",  "1,472 µL"],
+        ["1M DTT",  "6.4 µL",  "8 µL",    "64 µL",   "128 µL"],
+        ["Total",   "80 µL",   "100 µL",  "800 µL",  "1,600 µL"]
+      ]
+    },
+    usedIn: [1, 2]
+  },
+
+  "DB MM": {
+    fullName: "Dilution Buffer Master Mix",
+    box: "Prepared fresh (Step 3)", capColor: "Made from DB + DTT",
+    handling: [
+      "Store on ice until use",
+      "Pipette mix DB 10× before adding DTT (contains beads!)",
+      "Do NOT vortex",
+      "Add 82 µL per sample after TRB program"
+    ],
+    scaling: {
+      title: "DB MM Recipe",
+      cols: ["Component", "1 sample", "1 + 25%", "8 + 25%", "16 + 25%"],
+      rows: [
+        ["DB",      "75.6 µL", "94.5 µL", "756 µL",  "1,512 µL"],
+        ["1M DTT",  "6.4 µL",  "8 µL",    "64 µL",   "128 µL"],
+        ["Total",   "82 µL",   "102.5 µL","820 µL",  "1,640 µL"]
+      ]
+    },
+    usedIn: [3]
+  },
+
+  "WA MM": {
+    fullName: "Wash Buffer A Master Mix",
+    box: "Prepared fresh (Step 3)", capColor: "Made from WA + DTT",
+    handling: [
+      "Store at ROOM TEMPERATURE (not ice!)",
+      "Vortex WA first to dissolve any precipitate",
+      "Used off-magnet to resuspend beads in Step 4"
+    ],
+    scaling: {
+      title: "WA MM Recipe",
+      cols: ["Component", "1 sample", "1 + 25%", "8 + 25%", "16 + 25%"],
+      rows: [
+        ["WA",      "153.6 µL", "192 µL",  "1,536 µL", "3,072 µL"],
+        ["1M DTT",  "6.4 µL",   "8 µL",    "64 µL",    "128 µL"],
+        ["Total",   "160 µL",   "200 µL",  "1,600 µL", "3,200 µL"]
+      ]
+    },
+    usedIn: [3, 4]
+  },
+
+  "RT MM": {
+    fullName: "Reverse Transcription Master Mix",
+    box: "Prepared fresh (Step 3)", capColor: "Made from R1A/B/C + R2 + R3 + DTT",
+    handling: [
+      "Store on ice",
+      "Vortex R1A, R1B, R1C before use",
+      "Do NOT vortex R2 and R3",
+      "Prepare 166 µM DTT first (serial dilution)",
+      "Add 20 µL per sample to washed beads"
+    ],
+    scaling: {
+      title: "RT MM Recipe",
+      cols: ["Component", "1 sample", "1 + 10%", "8 + 10%", "16 + 10%"],
+      rows: [
+        ["R1A",       "4 µL",    "4.4 µL",  "35.2 µL",  "70.4 µL"],
+        ["R1B",       "2 µL",    "2.2 µL",  "17.6 µL",  "35.2 µL"],
+        ["R1C",       "10 µL",   "11 µL",   "88 µL",    "176 µL"],
+        ["R2",        "0.75 µL", "0.8 µL",  "6.6 µL",   "13.2 µL"],
+        ["R3",        "0.25 µL", "0.3 µL",  "2.2 µL",   "4.4 µL"],
+        ["166 µM DTT","3 µL",    "3.3 µL",  "26.4 µL",  "52.8 µL"],
+        ["Total",     "20 µL",   "22 µL",   "176 µL",   "352 µL"]
+      ]
+    },
+    usedIn: [3, 5]
+  },
+
+  "3S MM": {
+    fullName: "Second Strand Synthesis Master Mix",
+    box: "Prepared fresh (Step 7)", capColor: "Made from S1A + S1B + S2",
+    handling: [
+      "Store on ice",
+      "S1A PRECIPITATES — vortex until fully dissolved!",
+      "Vortex S1B",
+      "Do NOT vortex S2",
+      "Add 10 µL per sample, mix 15×"
+    ],
+    scaling: {
+      title: "3S MM Recipe",
+      cols: ["Component", "1 sample", "1 + 10%", "8 + 10%", "16 + 10%"],
+      rows: [
+        ["S1A",  "6.7 µL", "7.4 µL", "59 µL",   "118 µL"],
+        ["S1B",  "2.7 µL", "3 µL",   "23.8 µL", "47.5 µL"],
+        ["S2",   "0.6 µL", "0.7 µL", "5.3 µL",  "10.6 µL"],
+        ["Total","10 µL",  "11 µL",  "88 µL",   "176 µL"]
+      ]
+    },
+    usedIn: [7]
+  },
+
+  "Amp PCR MM": {
+    fullName: "Amplification PCR Master Mix",
+    box: "Prepared fresh (Step 10)", capColor: "Made from A1 + A2",
+    handling: [
+      "Store on ice",
+      "Mix 15× by pipette without bubbles",
+      "Add 12 µL per sample to 28 µL eluate",
+      "⚠ Do NOT discard A1 after — needed for PCR2!"
+    ],
+    scaling: {
+      title: "Amp PCR MM Recipe",
+      cols: ["Component", "1 sample", "1 + 10%", "8 + 10%", "16 + 10%"],
+      rows: [
+        ["A1",   "10 µL", "11 µL", "88 µL",   "176 µL"],
+        ["A2",   "2 µL",  "2.2 µL","17.6 µL", "35.2 µL"],
+        ["Total","12 µL", "13.2 µL","105.6 µL","211.2 µL"]
+      ]
+    },
+    usedIn: [10]
+  },
+
+  "166 µM DTT": {
+    fullName: "Diluted DTT for RT Master Mix",
+    box: "Prepared fresh (Step 3)", capColor: "Serial dilution from 1M DTT",
+    handling: [
+      "Two-step serial dilution — do not try to go 1M → 166 µM directly",
+      "Step 1: 2 µL 1M DTT + 998 µL nfH₂O = 2 mM DTT",
+      "Step 2: 83 µL 2 mM DTT + 917 µL nfH₂O = 166 µM DTT",
+      "Mix well after each dilution",
+      "3 µL per sample goes into RT MM"
+    ],
+    usedIn: [3]
+  },
 };
