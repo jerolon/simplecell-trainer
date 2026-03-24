@@ -18,293 +18,23 @@
   @keyframes xpPop{0%{opacity:0;transform:translateY(0) scale(0.5)}30%{opacity:1;transform:translateY(-10px) scale(1.2)}100%{opacity:0;transform:translateY(-40px) scale(1)}}
   @keyframes levelUp{0%{opacity:0;transform:scale(0.5)}50%{opacity:1;transform:scale(1.1)}100%{opacity:1;transform:scale(1)}}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.3)}50%{box-shadow:0 0 0 8px rgba(74,222,128,0)}}
+  @keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
 </style>
 </head>
 <body>
 <div id="root"></div>
+
+<!-- ═══ DATA FILES (plain JS, loaded before React) ═══ -->
+<script src="data/steps.js"></script>
+<script src="data/reagents.js"></script>
+<script src="data/questions.js"></script>
+
+<!-- ═══ MAIN APP (React components) ═══ -->
 <script type="text/babel">
-// ═══════════════════════════════════════════════════════════════════════
-// HOW TO ADD CONTENT:
-// Questions: add to QUESTIONS array. Each needs a "step" field (array of step numbers).
-// Ordering: add to ORDERING_CHALLENGES array. Each needs a "steps" field.
-// Images: add  image: "your-file.png"  to any detail section in STEPS, then
-//         upload that PNG to your GitHub repo next to index.html.
-// ═══════════════════════════════════════════════════════════════════════
-
 const { useState, useEffect, useCallback } = React;
+const e = React.createElement;
 
-const STEPS = [
-  {
-    id: 1, name: "Cell Priming & Pairing", duration: "1h 45min", phase: "pre",
-    icon: "\u{1F9EB}", color: "#4ade80",
-    summary: "Coat plates, prepare CPair beads, make KCB master mix, prime cells with CPM, pair cells with CPair beads in flat-bottom plates.",
-    reagentTable: {
-      title: "Reagent Preparations",
-      rows: [
-        ["0.1% BSA/dPBS", "47 \u00B5L 7.5% BSA + 3,463 \u00B5L dPBS", "Ice"],
-        ["3.75% BSA/dPBS", "2 mL 7.5% BSA + 2 mL dPBS", "Ice"],
-        ["0.04% BSA/dPBS", "5 \u00B5L 7.5% BSA + 995 \u00B5L dPBS", "Ice"],
-        ["1M DTT", "0.154 g DTT + 1 mL nfH\u2082O", "Ice"],
-      ]
-    },
-    masterMixes: [
-      { name: "KCB MM", per1: "73.6 \u00B5L KCB + 6.4 \u00B5L 1M DTT = 80 \u00B5L", per8: "736 + 64 \u00B5L (+25% excess)", note: "Aliquot 80 \u00B5L/sample into strip tubes on ice. Viscous \u2014 reverse pipette slowly!" }
-    ],
-    details: [
-      { sub: "1A", title: "Coating Flat-Bottom Plates",
-      image: "images/step1a-coating.png",
-        steps: [
-        "Add 120 \u00B5L cold dPBS + 0.1% BSA per well (1 well/sample). No bubbles at bottom.",
-        "Incubate \u22651 min at 4\u00B0C",
-        "Remove at 120 \u00B5L, then 10 \u00B5L to get all excess \u2014 residual liquid interferes with assay",
-        "Store coated plates at 4\u00B0C until use"
-      ]},
-      { sub: "1B", title: "CPair Preparation", image: "images/step1b-cpair.png", steps: [
-        "Tap tube on bench (never vortex). Pipette at 150 \u00B5L, 10\u00D7 until homogeneous. Avoid warming with hands.",
-        "Transfer to 1.5 mL tube: 170 \u00B5L (8-sample kit) or 340 \u00B5L (16-sample kit)",
-        "Magnet 1 min RT \u2192 remove sup (150 / 300 \u00B5L). Pellet is small \u2014 slides down!",
-        "Wash: off magnet \u2192 +300 \u00B5L cold dPBS, pipette 5\u00D7 \u2192 magnet 1 min \u2192 remove 300 \u00B5L",
-        "Resuspend: +150 \u00B5L (8) or 300 \u00B5L (16) cold dPBS, pipette 10\u00D7",
-        "Into pre-coated wells: 20 \u00B5L CPair (PBMCs/Organoids) or 15 \u00B5L CPair + 5 \u00B5L dPBS (Cell Lines)",
-        "Cover, store at 4\u00B0C \u2014 do not freeze. Unused washed CPair good for 1 month at 4\u00B0C."
-      ]},
-      { sub: "1C", title: "KCB Master Mix Prep",  image: "images/step1d-kcb.png", steps: [
-        "Quick spin KCB. Mix with pipette at 600 \u00B5L (8) or 900 \u00B5L (16) until homogeneous",
-        "KCB is extremely viscous \u2014 pipette VERY slowly. No bubbles! Use reverse pipetting.",
-        "Prepare KCB MM: 73.6 \u00B5L KCB + 6.4 \u00B5L 1M DTT per sample. Mix slowly.",
-        "Aliquot 80 \u00B5L KCB MM per tube into strip tubes, place on ice"
-      ]},
-      { sub: "1D", title: "Cell Priming",
-        image: "images/step1d-workflow.png",  // \u2190 UNCOMMENT & upload your PNG
-        steps: [
-        "Cells: 250 cells/\u00B5L (cell lines, 5K total), 425/\u00B5L (PBMCs, 8.5K), 500/\u00B5L (organoids, 10K) in 20 \u00B5L dPBS+0.04% BSA",
-        "Reconstitute CPM: +200 \u00B5L ice-cold dPBS \u2192 vortex 30s \u2192 quick spin = 6\u00D7 CPM",
-        "Dilute: 1\u00D7 (20 \u00B5L 6\u00D7+100 \u00B5L dPBS) cell lines/PBMCs | 1.5\u00D7 (30+90) organoids | 2\u00D7 (40+80) primary",
-        "Add 6 \u00B5L diluted CPM to cells in V-bottom, mix 5\u00D7 at 20 \u00B5L. Incubate on ice 20 min.",
-        "Wash 1: +175 \u00B5L dPBS+3.75% BSA \u2192 mix 5\u00D7 at 150 \u00B5L \u2192 500\u00D7g, 3 min, 4\u00B0C \u2192 remove sup",
-        "Wash 2: +200 \u00B5L dPBS+3.75% BSA \u2192 spin \u2192 remove sup",
-        "Wash 3: +200 \u00B5L dPBS (NO BSA) \u2192 spin \u2192 remove all sup + residual with 20 \u00B5L tip",
-        "Resuspend in 20 \u00B5L cold dPBS, mix 10\u00D7",
-        "Transfer to flat-bottom with CPair. Mix 20\u00D7 at 20 \u00B5L \u2014 tilt plate, aspirate bottom/sides, dispense top",
-        "Cover. Settle 40 min on ice \u2014 VIBRATION-FREE!"
-      ]}
-    ],
-    criticalNotes: [
-      "Never vortex CPair \u2014 pipette only. Avoid warming tube with hands.",
-      "CPM unstable above 4\u00B0C \u2014 use within 15 min. Aliquot unused 6\u00D7 CPM into 30 \u00B5L portions at -80\u00B0C.",
-      "Cell viability must be \u226590%. Count after filtering.",
-      "MACS: negative sorting ONLY \u2014 positive sorting interferes.",
-      "KCB: extremely viscous \u2014 reverse pipetting, go very slowly."
-    ]
-  },
-  {
-    id: 2, name: "Kinetic Confinement", duration: "45 min", phase: "pre",
-    icon: "\u2744\uFE0F", color: "#60a5fa",
-    summary: "Disrupt settled cell-bead mix, combine with viscous KCB master mix, flash-freeze on dry ice.",
-    details: [
-      { sub: null, title: "Procedure",
-        // image: "step2-mixing.png",
-        steps: [
-        "After 40 min: set pipette to 20 \u00B5L, mix 20\u00D7 slowly \u2014 tilt plate, aspirate from bottom, dispense around well",
-        "Proceed immediately \u2014 transfer full volume (40\u201350 \u00B5L) Cells-CPair \u2192 80 \u00B5L KCB MM",
-        "Set pipette to 80 \u00B5L. Mix 15\u00D7 \u2014 aspirate bottom, raise tips OUT of liquid, dispense ABOVE meniscus",
-        "Must be homogeneous (no refraction). Avoid bubbles.",
-        "Seal tubes. Immediately submerge fully in dry ice \u226540 min."
-      ]}
-    ],
-    criticalNotes: ["If >8 samples: work ONE strip tube at a time","Safe stop: dry ice \u226424h | after \u226540 min dry ice \u2192 -80\u00B0C \u22644 weeks","Do NOT allow samples to thaw during transfer"]
-  },
-  {
-    id: 3, name: "Barcoding & RNA Capture", duration: "45 min", phase: "pre",
-    icon: "\u{1F9EC}", color: "#f472b6",
-    summary: "Prepare master mixes, run TRB on frozen samples, add DB to capture barcoded RNA on beads.",
-    reagentTable: { title: "Reagent Setup", rows: [["DB","4\u00B0C \u2192 ice","Do NOT vortex"],["R1A, R1B, R1C","-20\u00B0C \u2192 ice","Vortex before use"],["R2, R3","-20\u00B0C \u2192 ice","Do NOT vortex"],["WA","-20\u00B0C \u2192 RT","Vortex to dissolve"],["WB","4\u00B0C \u2192 RT","\u2014"]]},
-    masterMixes: [
-      { name: "DB MM", per1: "75.6 \u00B5L DB + 6.4 \u00B5L DTT = 82 \u00B5L", per8: "756 + 64 \u00B5L (+25%)", note: "On ice." },
-      { name: "WA MM", per1: "153.6 \u00B5L WA + 6.4 \u00B5L DTT = 160 \u00B5L", per8: "1,536 + 64 \u00B5L (+25%)", note: "At RT." },
-      { name: "RT MM (20 \u00B5L)", per1: "R1A 4 + R1B 2 + R1C 10 + R2 0.75 + R3 0.25 + 166\u00B5M DTT 3", per8: "\u00D78 (+10%)", note: "On ice. Vortex R1A/B/C only." }
-    ],
-    thermoProgram: { name: "TRB", vol: "100 \u00B5L", time: "6\u201310 min", steps: "95\u00B0C 15s \u2192 55\u219240\u00B0C (1\u00B0C/6s = 90s) \u2192 35\u219220\u00B0C (1\u00B0C/9s = 135s) \u2192 20\u00B0C hold" },
-    details: [
-      { sub: null, title: "DTT & Master Mix Prep", steps: ["166 \u00B5M DTT: 2 \u00B5L 1M \u2192 998 \u00B5L nfH\u2082O = 2 mM. Then 83 \u00B5L 2mM \u2192 917 \u00B5L nfH\u2082O = 166 \u00B5M.","Prepare DB MM, WA MM, and RT MM per tables. Mix each 10\u00D7."]},
-      { sub: null, title: "Barcoding", steps: ["Start TRB. Transfer frozen samples from dry ice \u2192 thermocycler \u2192 run TRB","When done: proceed immediately at RT","Mix DB MM 10\u00D7 to resuspend. Add 82 \u00B5L DB MM per sample.","Set pipette to 120 \u00B5L, mix 10\u00D7","Magnet 5 min until clear. Start RT program."]}
-    ],
-    criticalNotes: ["TRB ramp rates CRITICAL \u2014 verify thermocycler","Do NOT vortex DB","Proceed immediately after TRB"]
-  },
-  {
-    id: 4, name: "Post-Capture Bead Clean-up", duration: "10 min", phase: "pre",
-    icon: "\u{1F9F9}", color: "#a78bfa",
-    summary: "Wash beads: WA off-magnet, then 2\u00D7 WB on-magnet.",
-    details: [{ sub: null, title: "Procedure", steps: ["On magnet: remove 180 \u00B5L sup \u2192 remove ~20 \u00B5L residual","Off magnet: +160 \u00B5L WA MM. Pipette 10\u00D7 at 120 \u00B5L to resuspend.","Magnet 2 min \u2192 remove 160 \u00B5L \u2192 remove ~10 \u00B5L residual","On magnet: +180 \u00B5L WB \u2192 30 sec \u2192 remove all","Repeat WB wash (2 total). Do NOT let beads dry."]}],
-    criticalNotes: ["Do NOT let beads dry \u2014 proceed to RT immediately"]
-  },
-  {
-    id: 5, name: "Reverse Transcription", duration: "45 min", phase: "pre",
-    icon: "\u{1F504}", color: "#fbbf24",
-    summary: "Add RT master mix to cleaned beads on ice, run RT program.",
-    thermoProgram: { name: "RT", vol: "20 \u00B5L", time: "~40 min", steps: "20\u00B0C 2min \u2192 30\u00B0C 2min \u2192 40\u00B0C 2min \u2192 50\u00B0C 15min \u2192 55\u00B0C 15min \u2192 98\u00B0C 3min \u2192 4\u00B0C hold" },
-    details: [{ sub: null, title: "Procedure", steps: ["Remove from magnet \u2192 ice. Add 20 \u00B5L RT MM.","Pipette 15\u00D7 at 15 \u00B5L. If clumps: mix 10\u201320\u00D7 more.","Seal, run RT. Volume = 20 \u00B5L."]}],
-    criticalNotes: ["Lid 105\u00B0C for ALL programs","Keep mixing until clumps break"]
-  },
-  {
-    id: 6, name: "RNaseH Treatment", duration: "30 min", phase: "pre",
-    icon: "\u2702\uFE0F", color: "#fb923c",
-    summary: "Add RNaseH to digest RNA strand of RNA:cDNA hybrids.",
-    thermoProgram: { name: "RNAH", vol: "22 \u00B5L", time: "~25 min", steps: "37\u00B0C 20min \u2192 65\u00B0C 5min \u2192 4\u00B0C hold" },
-    details: [{ sub: null, title: "Procedure", steps: ["Remove from TC \u2192 ice. Start RNAH. Quick spin.","Add 1.5 \u00B5L H (RNaseH). No mixing needed.","Seal, run RNAH. Volume = 22 \u00B5L."]}],
-    criticalNotes: ["No mixing required after adding RNaseH"]
-  },
-  {
-    id: 7, name: "Second Strand Synthesis", duration: "30 min", phase: "pre",
-    icon: "\u{1F9EA}", color: "#34d399",
-    summary: "Add 3S master mix to generate double-stranded cDNA.",
-    masterMixes: [{ name: "3S MM (10 \u00B5L)", per1: "S1A 6.7 + S1B 2.7 + S2 0.6 \u00B5L", per8: "S1A 59 + S1B 23.8 + S2 5.3 (+10%)", note: "Vortex S1A, S1B. Do NOT vortex S2." }],
-    thermoProgram: { name: "3S", vol: "32 \u00B5L", time: "22\u201325 min", steps: "75\u00B0C \u2192 20\u00B0C ramp (2.5\u00B0C/min = 22 min) \u2192 4\u00B0C hold" },
-    details: [{ sub: null, title: "Procedure", steps: ["Vortex S1A + S1B (S1A precipitates!). Do NOT vortex S2.","Prepare 3S MM. Mix 10\u00D7.","On ice: add 10 \u00B5L 3S MM. Mix 15\u00D7 at 20 \u00B5L.","Seal, run 3S. Volume = 32 \u00B5L."]}],
-    criticalNotes: ["S1A precipitates \u2014 vortex until dissolved"]
-  },
-  {
-    id: 8, name: "Proteinase K Treatment", duration: "30 min", phase: "pre",
-    icon: "\u{1F513}", color: "#e879f9",
-    summary: "Add Proteinase K to release cDNA from beads.",
-    thermoProgram: { name: "PK", vol: "33 \u00B5L", time: "~25 min", steps: "37\u00B0C 15min \u2192 55\u00B0C 10min \u2192 4\u00B0C hold" },
-    details: [{ sub: null, title: "Procedure", steps: ["Remove \u2192 ice. Start PK.","Add 1 \u00B5L K. Mix 10\u00D7 at 20 \u00B5L.","Run PK. Volume = 33 \u00B5L."]}],
-    criticalNotes: []
-  },
-  {
-    id: 9, name: "Post-3S Clean-up (SPRI)", duration: "25 min", phase: "pre",
-    icon: "\u{1F4A7}", color: "#38bdf8",
-    summary: "SPRI purification. 80% EtOH \u00D73. Elute 30 \u00B5L \u2192 transfer 28 \u00B5L.",
-    details: [{ sub: null, title: "Procedure (RT)", steps: ["+20 \u00B5L nfH\u2082O. +75 \u00B5L DNA Purification beads. Mix 10\u00D7.","5 min RT \u2192 magnet 2 min \u2192 remove 105 \u00B5L","Wash \u00D73: +180 \u00B5L 80% EtOH \u2192 1 min \u2192 remove all","Dry pellet to matte (2\u20135 min).","Off magnet: +30 \u00B5L nfH\u2082O. 5 min RT. (Make Amp PCR MM now!)","Magnet 2 min \u2192 transfer 28 \u00B5L to new tube."]}],
-    criticalNotes: ["Fresh 80% EtOH with ddH\u2082O","Use 5-min elution to prep Amp PCR MM"]
-  },
-  {
-    id: 10, name: "Amplification PCR (PCR1)", duration: "30 min", phase: "post",
-    icon: "\u{1F4C8}", color: "#f97316",
-    summary: "PCR amplify cDNA. 12 cy (cell lines) or 13 cy (PBMCs).",
-    masterMixes: [{ name: "Amp PCR MM (12 \u00B5L)", per1: "A1 10 + A2 2 \u00B5L", per8: "A1 88 + A2 17.6 (+10%)", note: "\u26A0 Keep A1 for PCR2!" }],
-    thermoProgram: { name: "PCR1", vol: "40 \u00B5L", time: "25\u201330 min", steps: "98\u00B0C 45s \u2192 [98\u00B0C 15s \u2192 60\u00B0C 30s \u2192 72\u00B0C 30s] \u00D7 12/13 \u2192 72\u00B0C 1min \u2192 4\u00B0C" },
-    details: [{ sub: null, title: "Procedure", steps: ["Set PCR1: 12 cy (cell lines) or 13 (PBMCs)","Mix MM 15\u00D7. On ice: +12 \u00B5L MM to 28 \u00B5L eluate. Mix 5\u00D7.","Seal, run PCR1. Volume = 40 \u00B5L."]}],
-    criticalNotes: ["Keep A1 for Step 13!","Safe stop: -20\u00B0C \u22643 days"]
-  },
-  {
-    id: 11, name: "Enrichment Beads Prep", duration: "10 min", phase: "post",
-    icon: "\u{1F9F2}", color: "#a3e635",
-    summary: "Dilute EA 1:1 with dPBS. Aliquot 17 \u00B5L/sample.",
-    masterMixes: [{ name: "Diluted EA", per1: "10 \u00B5L EA + 10 \u00B5L dPBS", per8: "88 + 88 (+10%)", note: "Aliquot 17 \u00B5L/sample at RT." }],
-    details: [{ sub: null, title: "Procedure", steps: ["Vortex EA, pipette 10\u00D7. Dilute 1:1 with dPBS. Mix 10\u00D7.","Aliquot 17 \u00B5L diluted EA per sample. RT."]}],
-    criticalNotes: []
-  },
-  {
-    id: 12, name: "Size Selection & Enrichment", duration: "1h", phase: "post",
-    icon: "\u{1F3AF}", color: "#ec4899",
-    summary: "Double-sided SPRI size selection, then EA bead enrichment.",
-    details: [
-      { sub: "12A", title: "Size Selection (RT)", steps: ["+60 \u00B5L nfH\u2082O. +50 \u00B5L beads. Mix 10\u00D7. 5 min RT.","\u26A0 KEEP 145 \u00B5L SUPERNATANT \u2192 new tubes","+20 \u00B5L beads to sup. Mix. 5 min. Magnet \u2192 discard sup.","Wash \u00D73: +180 \u00B5L 80% EtOH. Dry 1\u20133 min.","Elute: +19 \u00B5L nfH\u2082O \u2192 5 min \u2192 transfer 17 \u00B5L"]},
-      { sub: "12B", title: "Library Enrichment", steps: ["17 \u00B5L eluate + 17 \u00B5L diluted EA. Mix 10\u00D7.","Incubate 15 min RT \u2014 mix 10\u00D7 every 5 min!","+116 \u00B5L dPBS. Mix 10\u00D7. Magnet \u2192 remove all.","Wash \u00D72: +150 \u00B5L dPBS \u2192 1 min \u2192 remove","Off magnet: +27 \u00B5L nfH\u2082O = Enriched Library."]}
-    ],
-    criticalNotes: ["\u26A0 KEEP supernatant after 1st binding \u2014 it IS your library!","1st beads = remove large. 2nd beads = capture library.","Mix 10\u00D7 every 5 min during EA incubation."]
-  },
-  {
-    id: 13, name: "Indexing PCR (PCR2)", duration: "20 min", phase: "post",
-    icon: "\u{1F3F7}\uFE0F", color: "#8b5cf6",
-    summary: "Add Illumina UDI indexes. Amplify with A1. 6/7 cycles.",
-    thermoProgram: { name: "PCR2", vol: "40 \u00B5L", time: "15\u201320 min", steps: "98\u00B0C 45s \u2192 [98\u00B0C 15s \u2192 60\u00B0C 30s \u2192 72\u00B0C 30s] \u00D7 6/7 \u2192 72\u00B0C 1min \u2192 4\u00B0C" },
-    details: [{ sub: null, title: "Procedure", steps: ["Set PCR2: 6 cy (cell lines) or 7 (PBMCs)","Add 3 \u00B5L UDI to 27 \u00B5L Enriched Library. RECORD INDEX!","Add 10 \u00B5L A1. Mix 15\u00D7 at 30 \u00B5L. Run PCR2."]}],
-    criticalNotes: ["6 cy cell lines, 7 cy PBMCs","Record index \u2192 sample mapping!"]
-  },
-  {
-    id: 14, name: "Post-Indexing Clean-up & QC", duration: "25 min", phase: "post",
-    icon: "\u2705", color: "#22d3ee",
-    summary: "Final SPRI (100 \u00B5L EtOH washes). Library QC & sequencing.",
-    details: [
-      { sub: "14A", title: "Final Clean-up (RT)", steps: ["+10 \u00B5L nfH\u2082O. +40 \u00B5L beads. Mix. 5 min.","Magnet \u2192 remove 70 \u00B5L","Wash \u00D73: +100 \u00B5L 80% EtOH (NOT 180!)","Dry 2\u20135 min. Elute: +20 \u00B5L nfH\u2082O \u2192 5 min \u2192 transfer 18 \u00B5L","Store: 4\u00B0C \u226424h | -20\u00B0C long-term"]},
-      { sub: "14B", title: "Library QC & Sequencing", steps: ["1 \u00B5L on TapeStation or Fragment Analyzer. Expected: 600\u2013800 bp.","Quantify by qPCR.","Load: AVITI 600 pM | NextSeq 2000 1.4 nM | NovaSeq 6000 300 pM | NovaSeq X 150 pM","2% PhiX spike-in","R1 92cy \u00B7 I1 10cy \u00B7 I2 10cy \u00B7 R2 26cy","30,000 reads/cell. Output: Count Matrix + Assay QC."]}
-    ],
-    criticalNotes: ["100 \u00B5L EtOH washes here (NOT 180 \u00B5L)","Output: Count Matrix + Assay QC"]
-  }
-];
-
-const LIBRARY_STRUCTURE = [
-  {name:"Seq Adapter 2",read:"",color:"#8b5cf6"},{name:"Index 2 (i5)",read:"Read 4",color:"#ec4899"},
-  {name:"CSGX Barcode",read:"",color:"#f97316"},{name:"Constant",read:"",color:"#fbbf24"},
-  {name:"PolyT Capture",read:"R2 (26cy)",color:"#4ade80"},{name:"mRNA/cDNA Insert",read:"R1 (92cy)",color:"#60a5fa"},
-  {name:"cDNA Priming",read:"",color:"#34d399"},{name:"Index 1 (i7)",read:"Read 3",color:"#f472b6"},
-  {name:"Seq Adapter 1",read:"",color:"#a78bfa"},
-];
-
-const SEQUENCER_TABLE = [{name:"AVITI FS",loading:"600 pM"},{name:"NextSeq 2000",loading:"1.4 nM"},{name:"NovaSeq 6000",loading:"300 pM"},{name:"NovaSeq X",loading:"150 pM"}];
-
-// Each question has step: [array of step numbers it belongs to]
-// step: [0] means "overview / general"
-const QUESTIONS = [
-  {q:"What is the very first sub-step?",a:"Coating flat-bottom plates with 0.1% BSA/dPBS",wrong:["Resuspending CPair","Reconstituting CPM","Preparing KCB MM"],diff:1,cat:"order",hint:"Step 1A \u2014 what do wells need first?",step:[1]},
-  {q:"Which step follows Kinetic Confinement?",a:"Barcoding & Capture of Target RNA",wrong:["Reverse Transcription","Post-Capture Clean-up","Cell Priming"],diff:1,cat:"order",hint:"Step 2 \u2192 Step ?. Uses TRB.",step:[2,3]},
-  {q:"How many total protocol steps?",a:"14",wrong:["12","16","10"],diff:1,cat:"overview",hint:"Steps 1 through ?",step:[0]},
-  {q:"Which phase does PCR1 belong to?",a:"Post-PCR",wrong:["Pre-PCR","Both","Neither"],diff:1,cat:"overview",hint:"Step 10 \u2014 boundary is between 9 and 10.",step:[10]},
-  {q:"What does CPM stand for?",a:"Cell Pairing Mix",wrong:["Cell Priming Medium","Capture Probe Mix","Cell Processing Module"],diff:1,cat:"reagent",hint:"Lyophilized reagent in Step 1D.",step:[1]},
-  {q:"Sequencing platform?",a:"Illumina",wrong:["Nanopore","PacBio","Ion Torrent"],diff:1,cat:"overview",hint:"UDI adapters from this company.",step:[14]},
-  {q:"Minimum cell viability?",a:"\u226590%",wrong:["\u226580%","\u226595%","\u226570%"],diff:1,cat:"detail",hint:"Cell Handling section.",step:[1]},
-  {q:"CPair storage temp?",a:"4\u00B0C (Box 1)",wrong:["-20\u00B0C (Box 2)","Room temp","-80\u00B0C"],diff:1,cat:"reagent",hint:"Kit Components \u2014 Box 1.",step:[1]},
-  {q:"Which MACS sorting interferes?",a:"Positive sorting",wrong:["Negative sorting","Both","Neither"],diff:1,cat:"detail",hint:"Use _____ sorting only.",step:[1]},
-  {q:"Safe stop after Kinetic Confinement?",a:"Dry ice \u226424h or -80\u00B0C \u22644 weeks",wrong:["4\u00B0C overnight","RT 2 hours","-20\u00B0C 1 week"],diff:1,cat:"detail",hint:"Two options: cold solid + freezer.",step:[2]},
-  {q:"KCB MM aliquot per sample?",a:"80 \u00B5L",wrong:["100 \u00B5L","60 \u00B5L","50 \u00B5L"],diff:2,cat:"volume",hint:"Step 1C \u2014 into strip tubes on ice.",step:[1]},
-  {q:"BSA concentration for coating plates?",a:"0.1% BSA in dPBS",wrong:["0.04% BSA","3.75% BSA","7.5% BSA"],diff:2,cat:"reagent",hint:"Step 1A \u2014 the thinnest BSA.",step:[1]},
-  {q:"Cell concentration for PBMCs?",a:"425 cells/\u00B5L (8,500 total)",wrong:["250 cells/\u00B5L (5,000)","500 cells/\u00B5L (10,000)","1,000 cells/\u00B5L (20,000)"],diff:2,cat:"detail",hint:"Between cell lines (250) and organoids (500).",step:[1]},
-  {q:"CPM incubation time on ice?",a:"20 minutes",wrong:["10 min","40 min","5 min"],diff:2,cat:"timing",hint:"Step 1D, after 6 \u00B5L CPM.",step:[1]},
-  {q:"DB MM volume per sample?",a:"82 \u00B5L",wrong:["75 \u00B5L","100 \u00B5L","60 \u00B5L"],diff:2,cat:"volume",hint:"75.6 + 6.4 = ?",step:[3]},
-  {q:"Cell/CPair settling time?",a:"40 min on ice",wrong:["20 min on ice","30 min RT","60 min 4\u00B0C"],diff:2,cat:"timing",hint:"Step 1D final \u2014 vibration-free!",step:[1]},
-  {q:"RNaseH volume per sample?",a:"1.5 \u00B5L",wrong:["2 \u00B5L","1 \u00B5L","3 \u00B5L"],diff:2,cat:"volume",hint:"Step 6 \u2014 no mixing needed.",step:[6]},
-  {q:"Centrifuge settings for cells?",a:"500 \u00D7 g, 3 min, 4\u00B0C",wrong:["300 \u00D7 g, 5 min, 4\u00B0C","1000 \u00D7 g, 2 min, RT","200 \u00D7 g, 10 min, 4\u00B0C"],diff:2,cat:"detail",hint:"Step 1D washes.",step:[1]},
-  {q:"Which reagents must NOT be vortexed?",a:"R2, R3, S2, CPair, and DB",wrong:["R1A, R1B, R1C","S1A and S1B","A1 and A2"],diff:2,cat:"reagent",hint:"Across Steps 1, 3, 7.",step:[1,3,7]},
-  {q:"PCR1 cycles for cell lines?",a:"12 cycles",wrong:["13","10","15"],diff:2,cat:"detail",hint:"Step 10 \u2014 fewer than PBMCs.",step:[10]},
-  {q:"PCR2 cycles for PBMCs?",a:"7 cycles",wrong:["6","8","5"],diff:2,cat:"detail",hint:"Step 13 \u2014 +1 vs cell lines.",step:[13]},
-  {q:"UDI volume in PCR2?",a:"3 \u00B5L",wrong:["5 \u00B5L","2 \u00B5L","1 \u00B5L"],diff:2,cat:"volume",hint:"Step 13 sub-step 2.",step:[13]},
-  {q:"Eluate transferred after post-3S clean-up?",a:"28 \u00B5L (from 30 \u00B5L elution)",wrong:["18 \u00B5L (from 20 \u00B5L)","45 \u00B5L (from 50 \u00B5L)","35 \u00B5L (from 40 \u00B5L)"],diff:2,cat:"volume",hint:"Step 9 \u2014 leave ~2 \u00B5L.",step:[9]},
-  {q:"CPair volume for 16-sample kit?",a:"340 \u00B5L",wrong:["170 \u00B5L","300 \u00B5L","200 \u00B5L"],diff:2,cat:"volume",hint:"8-sample = 170, so 16 = ?",step:[1]},
-  {q:"Washed CPair storage at 4\u00B0C?",a:"1 month",wrong:["1 week","2 weeks","3 months"],diff:2,cat:"detail",hint:"Step 1B reuse note.",step:[1]},
-  {q:"RNAH enzyme activity temp?",a:"37\u00B0C for 20 min",wrong:["42\u00B0C 15 min","37\u00B0C 30 min","55\u00B0C 20 min"],diff:2,cat:"thermo",hint:"Step 6 TC program.",step:[6]},
-  {q:"Proteinase K volume?",a:"1 \u00B5L",wrong:["1.5 \u00B5L","2 \u00B5L","0.5 \u00B5L"],diff:2,cat:"volume",hint:"Smallest addition.",step:[8]},
-  {q:"EtOH wash volume in Step 14?",a:"100 \u00B5L",wrong:["180 \u00B5L","150 \u00B5L","200 \u00B5L"],diff:2,cat:"volume",hint:"Different from Steps 9/12.",step:[14]},
-  {q:"RT master mix total volume?",a:"20 \u00B5L",wrong:["22 \u00B5L","10 \u00B5L","32 \u00B5L"],diff:2,cat:"volume",hint:"Sum all components.",step:[3,5]},
-  {q:"dPBS added during EA enrichment?",a:"116 \u00B5L",wrong:["100 \u00B5L","150 \u00B5L","200 \u00B5L"],diff:2,cat:"volume",hint:"Step 12B after 15 min.",step:[12]},
-  {q:"Coating solution volume per well?",a:"120 \u00B5L",wrong:["100 \u00B5L","150 \u00B5L","200 \u00B5L"],diff:2,cat:"volume",hint:"Step 1A sub-step 1.",step:[1]},
-  {q:"Min time on dry ice before -80\u00B0C?",a:"40 minutes",wrong:["20 min","60 min","30 min"],diff:2,cat:"timing",hint:"Same as settling time.",step:[2]},
-  {q:"TRB ramp 55\u219240\u00B0C?",a:"1\u00B0C per 6 seconds (90s)",wrong:["1\u00B0C/9s","2.5\u00B0C/min","1\u00B0C/3s"],diff:3,cat:"thermo",hint:"First (faster) TRB ramp.",step:[3]},
-  {q:"TRB ramp 35\u219220\u00B0C?",a:"1\u00B0C per 9 seconds (135s)",wrong:["1\u00B0C/6s","2.5\u00B0C/min","1\u00B0C/12s"],diff:3,cat:"thermo",hint:"Second (slower) TRB ramp.",step:[3]},
-  {q:"3S program ramp rate?",a:"2.5\u00B0C/min (75\u219220\u00B0C in 22 min)",wrong:["1\u00B0C/6s","1\u00B0C/9s","5\u00B0C/min"],diff:3,cat:"thermo",hint:"55\u00B0C drop in 22 min.",step:[7]},
-  {q:"How is 6\u00D7 CPM prepared?",a:"200 \u00B5L ice-cold dPBS into lyophilized tube, vortex 30s",wrong:["Dilute 1:6 in nfH\u2082O","200 \u00B5L warm dPBS","200 \u00B5L KCB"],diff:3,cat:"reagent",hint:"Step 1D sub-step 5. Powder.",step:[1]},
-  {q:"1.5\u00D7 CPM dilution (organoids)?",a:"30 \u00B5L 6\u00D7 + 90 \u00B5L ice-cold dPBS",wrong:["25+100 \u00B5L","20+100 \u00B5L","40+80 \u00B5L"],diff:3,cat:"reagent",hint:"1\u00D7=20+100, 2\u00D7=40+80. 1.5\u00D7=?",step:[1]},
-  {q:"Step 12 first binding: supernatant?",a:"KEEP it \u2014 transfer 145 \u00B5L (it's your library!)",wrong:["Discard","More beads on magnet","Freeze"],diff:3,cat:"detail",hint:"Most critical DO NOT DISCARD.",step:[12]},
-  {q:"How is 166 \u00B5M DTT prepared?",a:"1M\u21922mM (2+998 \u00B5L), then 2mM\u2192166\u00B5M (83+917 \u00B5L)",wrong:["1M\u2192166\u00B5M directly","1M\u219210mM\u2192166\u00B5M","1M\u21921mM\u2192166\u00B5M"],diff:3,cat:"reagent",hint:"Serial: 2/1000\u00D71M=2mM, 83/1000\u00D72mM=166\u00B5M.",step:[3]},
-  {q:"Expected library fragment size?",a:"600\u2013800 bp average",wrong:["300\u2013500 bp","200\u2013400 bp","800\u20131200 bp"],diff:3,cat:"qc",hint:"Analyzed 150\u20131500 bp range.",step:[14]},
-  {q:"NextSeq 2000 loading?",a:"1.4 nM",wrong:["600 pM","300 pM","150 pM"],diff:3,cat:"qc",hint:"Only nM value.",step:[14]},
-  {q:"NovaSeq X loading?",a:"150 pM",wrong:["300 pM","600 pM","1.4 nM"],diff:3,cat:"qc",hint:"Lowest pM.",step:[14]},
-  {q:"AVITI FS loading?",a:"600 pM",wrong:["1.4 nM","300 pM","150 pM"],diff:3,cat:"qc",hint:"Highest pM.",step:[14]},
-  {q:"Read 1 cycles?",a:"92 cycles",wrong:["100","150","50"],diff:3,cat:"qc",hint:"Longest read.",step:[14]},
-  {q:"Read 2 cycles?",a:"26 cycles",wrong:["92","10","50"],diff:3,cat:"qc",hint:"Shorter read.",step:[14]},
-  {q:"Index cycles (each)?",a:"10 cycles each",wrong:["8 each","12 each","6 each"],diff:3,cat:"qc",hint:"I1 = I2.",step:[14]},
-  {q:"PhiX spike-in?",a:"2%",wrong:["5%","1%","10%"],diff:3,cat:"qc",hint:"Seq Rec step 4.",step:[14]},
-  {q:"Read depth?",a:"30,000 reads/cell",wrong:["20,000","50,000","10,000"],diff:3,cat:"qc",hint:"Seq Rec step 1.",step:[14]},
-  {q:"Volume after PK treatment?",a:"33 \u00B5L",wrong:["32 \u00B5L","22 \u00B5L","20 \u00B5L"],diff:3,cat:"volume",hint:"32 (3S) + 1 (K) = ?",step:[8]},
-  {q:"RT highest temperature?",a:"98\u00B0C for 3 min",wrong:["95\u00B0C 5 min","85\u00B0C 2 min","70\u00B0C 10 min"],diff:3,cat:"thermo",hint:"Heat inactivation step.",step:[5]},
-  {q:"PK program temps?",a:"37\u00B0C 15 min \u2192 55\u00B0C 10 min",wrong:["37\u00B0C 20min \u2192 65\u00B0C 5min","42\u00B0C 15min \u2192 55\u00B0C 10min","37\u00B0C 10min \u2192 55\u00B0C 15min"],diff:3,cat:"thermo",hint:"Compare: RNAH = 37/20 + 65/5.",step:[8]},
-  {q:"Cell washes after CPM incubation?",a:"3 washes (BSA, BSA, no-BSA)",wrong:["2 washes","4 washes","1 wash"],diff:3,cat:"detail",hint:"Two 3.75% BSA, then plain dPBS.",step:[1]},
-  {q:"dPBS wash volume in Step 12B?",a:"150 \u00B5L (\u00D72 washes)",wrong:["180 \u00B5L (\u00D73)","200 \u00B5L (\u00D72)","100 \u00B5L (\u00D73)"],diff:3,cat:"volume",hint:"Uses dPBS, not EtOH.",step:[12]},
-  {q:"DNA Purification beads in Step 12 first binding?",a:"50 \u00B5L",wrong:["75 \u00B5L","40 \u00B5L","20 \u00B5L"],diff:3,cat:"volume",hint:"Removes large fragments. 2nd = 20 \u00B5L.",step:[12]},
-  {q:"How is 0.04% BSA/dPBS prepared?",a:"5 \u00B5L 7.5% BSA + 995 \u00B5L dPBS",wrong:["4+996 \u00B5L","40+960 \u00B5L","0.5+999.5 \u00B5L"],diff:3,cat:"reagent",hint:"(0.04/7.5)\u00D71000 \u2248 5.",step:[1]},
-];
-
-const ORDERING_CHALLENGES = [
-  {q:"Order the major pre-PCR phases:",items:["Cell Priming & Pairing","Kinetic Confinement","Barcoding & RNA Capture","Post-Capture Clean-up","Reverse Transcription"],diff:1,hint:"Steps 1\u21925",steps:[1,2,3,4,5]},
-  {q:"Order the enzymatic reactions:",items:["Reverse Transcription","RNaseH Treatment","Second Strand Synthesis","Proteinase K Treatment"],diff:2,hint:"cDNA \u2192 destroy RNA \u2192 dsDNA \u2192 release",steps:[5,6,7,8]},
-  {q:"Order the post-PCR steps:",items:["Amplification PCR","Enrichment Beads Prep","Size Selection & Enrichment","Indexing PCR","Post-Indexing Clean-up"],diff:2,hint:"Amplify\u2192Beads\u2192Select\u2192Index\u2192Clean",steps:[10,11,12,13,14]},
-  {q:"Order the Cell Priming sub-steps:",items:["Coat plates","Prepare CPair","Prepare KCB MM","Prime cells with CPM","Pair cells with CPair"],diff:3,hint:"1A\u21921B\u21921C\u21921D",steps:[1]},
-  {q:"Order the 7 thermocycler programs:",items:["TRB","RT","RNAH","3S","PK","PCR1","PCR2"],diff:2,hint:"Barcode\u2192RT\u2192RNaseH\u21922nd\u2192PK\u2192Amp\u2192Index",steps:[3,5,6,7,8,10,13]},
-  {q:"Order the 3 cell wash buffers (Step 1D):",items:["dPBS + 3.75% BSA","dPBS + 3.75% BSA (repeat)","dPBS only (no BSA)"],diff:3,hint:"Two high-BSA, then plain.",steps:[1]},
-];
-
-// \u2500\u2500\u2500 Utilities \u2500\u2500\u2500
+// ─── Utilities ──────────────────────────────────────────────────────
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function getXP(d,s){return(d===1?10:d===2?25:50)+Math.min(s,5)*5;}
 function getLevel(x){
@@ -316,16 +46,71 @@ function getLevel(x){
   return{level:6,title:"Protocol Master \u{1F9EC}",next:null,prev:1000};
 }
 
-const e=React.createElement;
+// ─── Reagent text linking ───────────────────────────────────────────
+// Scans a string for REAGENT_DB keys and returns React elements with
+// clickable blue terms that open the sidebar.
+function renderLinkedText(text, onTap) {
+  if (typeof REAGENT_DB === 'undefined') return [text]; // fallback if no reagent data
+  const keys = Object.keys(REAGENT_DB).sort((a,b) => b.length - a.length);
+  const pattern = new RegExp("\\b(" + keys.map(k => k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join("|") + ")\\b", "g");
+  const parts = []; let last = 0; let match;
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > last) parts.push(text.slice(last, match.index));
+    const term = match[1];
+    parts.push(e('span', {
+      key: match.index, onClick: (ev) => { ev.stopPropagation(); onTap(term); },
+      style: { color:"#60a5fa", borderBottom:"1px dashed #60a5fa55", cursor:"pointer", fontWeight:600 }
+    }, term));
+    last = pattern.lastIndex;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts;
+}
 
+// ─── Reagent Sidebar ────────────────────────────────────────────────
+function ReagentSidebar({term, onClose}) {
+  if (!term || typeof REAGENT_DB === 'undefined' || !REAGENT_DB[term]) return null;
+  const r = REAGENT_DB[term];
+  return e('div', {style:{position:"fixed",top:0,right:0,bottom:0,width:340,maxWidth:"85vw",
+    background:"#141827",borderLeft:"1px solid rgba(255,255,255,0.1)",
+    zIndex:200,overflowY:"auto",padding:"20px",animation:"slideIn 0.2s ease",
+    boxShadow:"-8px 0 30px rgba(0,0,0,0.5)"}},
+    e('button',{onClick:onClose,style:{position:"absolute",top:12,right:12,background:"none",
+      border:"1px solid rgba(255,255,255,0.15)",borderRadius:6,color:"#94a3b8",
+      padding:"4px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit"}},"\u2715 Close"),
+    e('div',{style:{marginBottom:16,paddingRight:60}},
+      e('div',{style:{fontSize:20,fontWeight:700,color:"#60a5fa"}},term),
+      e('div',{style:{fontSize:13,color:"#94a3b8",marginTop:2}},r.fullName)),
+    r.image && e('img',{src:r.image,alt:term,style:{width:"100%",borderRadius:8,
+      marginBottom:16,border:"1px solid rgba(255,255,255,0.1)"}}),
+    e('div',{style:{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}},
+      e('div',{style:{background:"rgba(96,165,250,0.1)",border:"1px solid rgba(96,165,250,0.25)",
+        borderRadius:6,padding:"6px 12px",fontSize:12,color:"#60a5fa",fontWeight:600}},r.box),
+      e('div',{style:{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",
+        borderRadius:6,padding:"6px 12px",fontSize:12,color:"#94a3b8"}},r.capColor)),
+    r.usedIn && e('div',{style:{fontSize:11,color:"#64748b",marginBottom:16}},
+      "Used in: "+r.usedIn.map(function(s){return "Step "+s;}).join(", ")),
+    e('div',{style:{fontSize:11,fontWeight:700,color:"#fbbf24",letterSpacing:1.5,marginBottom:8}},"HANDLING"),
+    r.handling.map(function(h,i){ return e('div',{key:i,style:{fontSize:12,color:"#fde68a",lineHeight:1.6,marginBottom:4}},"\u2022 "+h); }),
+    r.scaling && e('div',{style:{marginTop:16}},
+      e('div',{style:{fontSize:11,fontWeight:700,color:"#818cf8",letterSpacing:1.5,marginBottom:8}},r.scaling.title),
+      e('table',{style:{width:"100%",fontSize:11,borderCollapse:"collapse"}},
+        e('thead',null,e('tr',null,r.scaling.cols.map(function(c,i){
+          return e('th',{key:i,style:{padding:"6px 8px",textAlign:"left",color:"#94a3b8",borderBottom:"1px solid rgba(255,255,255,0.1)",fontWeight:600}},c);}))),
+        e('tbody',null,r.scaling.rows.map(function(row,i){
+          return e('tr',{key:i},row.map(function(c,j){
+            return e('td',{key:j,style:{padding:"6px 8px",color:j===0?"#e2e8f0":"#c7d2fe",fontFamily:j>0?"monospace":"inherit",borderBottom:"1px solid rgba(255,255,255,0.04)"}},c);}));})))));
+}
+
+// ─── Sub-components ─────────────────────────────────────────────────
 function ThermoBox({prog}){if(!prog)return null;return e('div',{style:{background:"rgba(251,146,60,0.06)",border:"1px solid rgba(251,146,60,0.18)",borderRadius:8,padding:"10px 14px",marginBottom:12}},e('div',{style:{display:"flex",alignItems:"center",gap:8,marginBottom:4}},e('span',{style:{fontSize:11,fontWeight:700,color:"#fb923c",letterSpacing:1.5}},"\u{1F321}\uFE0F "+prog.name),e('span',{style:{fontSize:10,color:"#94a3b8",fontFamily:"monospace"}},"Vol: "+prog.vol+" \u00B7 ~"+prog.time)),e('div',{style:{fontSize:12,color:"#fde68a",fontFamily:"monospace",lineHeight:1.7,whiteSpace:"pre-wrap"}},prog.steps));}
 
-function MasterMixTable({mixes}){if(!mixes||!mixes.length)return null;return e('div',{style:{marginBottom:12}},mixes.map((m,i)=>e('div',{key:i,style:{background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.15)",borderRadius:8,padding:"10px 14px",marginBottom:8}},e('div',{style:{fontSize:11,fontWeight:700,color:"#818cf8",letterSpacing:1,marginBottom:6}},"\u{1F9EA} "+m.name),e('div',{style:{fontSize:11,color:"#c7d2fe",fontFamily:"monospace",lineHeight:1.8}},e('div',null,"1\u00D7: "+m.per1),e('div',null,"8\u00D7: "+m.per8),m.note&&e('div',{style:{color:"#94a3b8",fontStyle:"italic",marginTop:4}},m.note)))));}
+function MasterMixTable({mixes}){if(!mixes||!mixes.length)return null;return e('div',{style:{marginBottom:12}},mixes.map(function(m,i){return e('div',{key:i,style:{background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.15)",borderRadius:8,padding:"10px 14px",marginBottom:8}},e('div',{style:{fontSize:11,fontWeight:700,color:"#818cf8",letterSpacing:1,marginBottom:6}},"\u{1F9EA} "+m.name),e('div',{style:{fontSize:11,color:"#c7d2fe",fontFamily:"monospace",lineHeight:1.8}},e('div',null,"1\u00D7: "+m.per1),e('div',null,"8\u00D7: "+m.per8),m.note&&e('div',{style:{color:"#94a3b8",fontStyle:"italic",marginTop:4}},m.note)));}));}
 
-function HintButton({hint}){const[s,setS]=useState(false);return e('div',{style:{marginBottom:16}},e('button',{onClick:()=>setS(!s),style:{background:s?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.04)",border:"1px solid "+(s?"rgba(251,191,36,0.3)":"rgba(255,255,255,0.1)"),borderRadius:8,padding:"8px 14px",fontSize:12,color:s?"#fbbf24":"#94a3b8",cursor:"pointer",fontFamily:"inherit",fontWeight:500}},"\u{1F4A1} "+(s?"Hide Hint":"Show Hint")),s&&e('div',{style:{marginTop:8,padding:"10px 14px",background:"rgba(251,191,36,0.06)",border:"1px solid rgba(251,191,36,0.15)",borderRadius:8,fontSize:13,color:"#fde68a",lineHeight:1.6}},hint));}
+function HintButton({hint}){const[s,setS]=useState(false);return e('div',{style:{marginBottom:16}},e('button',{onClick:function(){setS(!s);},style:{background:s?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.04)",border:"1px solid "+(s?"rgba(251,191,36,0.3)":"rgba(255,255,255,0.1)"),borderRadius:8,padding:"8px 14px",fontSize:12,color:s?"#fbbf24":"#94a3b8",cursor:"pointer",fontFamily:"inherit",fontWeight:500}},"\u{1F4A1} "+(s?"Hide Hint":"Show Hint")),s&&e('div',{style:{marginTop:8,padding:"10px 14px",background:"rgba(251,191,36,0.06)",border:"1px solid rgba(251,191,36,0.15)",borderRadius:8,fontSize:13,color:"#fde68a",lineHeight:1.6}},hint));}
 
-// StepCard now renders images and a "Test me" button
-function StepCard({step,isExpanded,onToggle,onTestStep}){
+// StepCard — renders images, linked reagent text, and "Test me" button
+function StepCard({step,isExpanded,onToggle,onTestStep,onTap}){
   return e('div',{style:{background:isExpanded?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.03)",border:"1px solid "+(isExpanded?step.color+"55":"rgba(255,255,255,0.08)"),borderRadius:12,padding:"16px 20px",cursor:"pointer",transition:"all 0.3s",marginBottom:8},onClick:onToggle},
     e('div',{style:{display:"flex",alignItems:"center",gap:12}},
       e('span',{style:{fontSize:24}},step.icon),
@@ -338,64 +123,62 @@ function StepCard({step,isExpanded,onToggle,onTestStep}){
         e('div',{style:{fontSize:12,color:"#94a3b8",fontFamily:"monospace"}},step.duration),
         e('div',{style:{fontSize:18,color:"#64748b",transform:isExpanded?"rotate(180deg)":"rotate(0)",transition:"transform 0.2s"}},"\u25BE"))),
     !isExpanded&&e('div',{style:{marginTop:8,fontSize:13,color:"#94a3b8",lineHeight:1.5}},step.summary),
-    isExpanded&&e('div',{style:{marginTop:16},onClick:ev=>ev.stopPropagation()},
+    isExpanded&&e('div',{style:{marginTop:16},onClick:function(ev){ev.stopPropagation();}},
       e('div',{style:{fontSize:13,color:"#cbd5e1",lineHeight:1.7,marginBottom:12}},step.summary),
       e(ThermoBox,{prog:step.thermoProgram}),
       e(MasterMixTable,{mixes:step.masterMixes}),
       step.reagentTable&&e('div',{style:{marginBottom:12}},
         e('div',{style:{fontSize:11,fontWeight:700,color:"#94a3b8",letterSpacing:1.5,marginBottom:6}},step.reagentTable.title),
-        e('table',{style:{width:"100%",fontSize:11,borderCollapse:"collapse"}},e('tbody',null,step.reagentTable.rows.map((r,i)=>e('tr',{key:i,style:{borderBottom:"1px solid rgba(255,255,255,0.05)"}},r.map((c,j)=>e('td',{key:j,style:{padding:"6px 8px",color:j===0?"#e2e8f0":"#94a3b8",fontWeight:j===0?600:400,fontFamily:j===1?"monospace":"inherit"}},c))))))),
-      step.details.map((sec,si)=>e('div',{key:si,style:{marginBottom:16}},
+        e('table',{style:{width:"100%",fontSize:11,borderCollapse:"collapse"}},e('tbody',null,step.reagentTable.rows.map(function(r,i){return e('tr',{key:i,style:{borderBottom:"1px solid rgba(255,255,255,0.05)"}},r.map(function(c,j){return e('td',{key:j,style:{padding:"6px 8px",color:j===0?"#e2e8f0":"#94a3b8",fontWeight:j===0?600:400,fontFamily:j===1?"monospace":"inherit"}},c);}));})))),
+      step.details.map(function(sec,si){return e('div',{key:si,style:{marginBottom:16}},
         e('div',{style:{fontSize:11,fontWeight:700,color:step.color,letterSpacing:1.5,textTransform:"uppercase",marginBottom:8}},(sec.sub?sec.sub+". ":"")+sec.title),
-        // IMAGE RENDERING: if section has image field, show it here
         sec.image&&e('img',{src:sec.image,alt:sec.title,style:{width:"100%",borderRadius:8,marginBottom:12,border:"1px solid rgba(255,255,255,0.1)"}}),
-        sec.steps.map((s,i)=>e('div',{key:i,style:{display:"flex",gap:10,marginBottom:6,fontSize:13,color:"#e2e8f0",lineHeight:1.6}},
+        sec.steps.map(function(s,i){return e('div',{key:i,style:{display:"flex",gap:10,marginBottom:6,fontSize:13,color:"#e2e8f0",lineHeight:1.6}},
           e('span',{style:{color:step.color,fontWeight:700,fontFamily:"monospace",fontSize:11,minWidth:20,paddingTop:2}},String(i+1).padStart(2,"0")),
-          e('span',null,s))))),
+          e('span',null,renderLinkedText(s, onTap)));}));}),
       step.criticalNotes.length>0&&e('div',{style:{background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:8,padding:"12px 16px"}},
         e('div',{style:{fontSize:11,fontWeight:700,color:"#fbbf24",letterSpacing:1.5,marginBottom:6}},"\u26A0 CRITICAL NOTES"),
-        step.criticalNotes.map((n,i)=>e('div',{key:i,style:{fontSize:12,color:"#fde68a",lineHeight:1.6,marginBottom:4}},"\u2022 "+n))),
-      // TEST ME BUTTON
-      e('button',{onClick:()=>onTestStep(step.id),style:{marginTop:16,width:"100%",padding:"12px",background:"linear-gradient(135deg,"+step.color+"22,"+step.color+"11)",border:"1px solid "+step.color+"44",borderRadius:10,color:step.color,fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit",letterSpacing:0.5}},"\u26A1 Test me on Step "+step.id)));
+        step.criticalNotes.map(function(n,i){return e('div',{key:i,style:{fontSize:12,color:"#fde68a",lineHeight:1.6,marginBottom:4}},"\u2022 "+n);})),
+      e('button',{onClick:function(){onTestStep(step.id);},style:{marginTop:16,width:"100%",padding:"12px",background:"linear-gradient(135deg,"+step.color+"22,"+step.color+"11)",border:"1px solid "+step.color+"44",borderRadius:10,color:step.color,fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"inherit",letterSpacing:0.5}},"\u26A1 Test me on Step "+step.id)));
 }
 
 function QuizQuestion({question,options,onAnswer,answered,selectedIdx,correctIdx,hint}){
   return e('div',null,
     e('div',{style:{fontSize:17,fontWeight:600,color:"#f1f5f9",lineHeight:1.5,marginBottom:12}},question),
-    !answered&&e(HintButton,{hint}),
-    e('div',{style:{display:"flex",flexDirection:"column",gap:10}},options.map((o,i)=>{
-      let bg="rgba(255,255,255,0.04)",bd="rgba(255,255,255,0.1)",tc="#e2e8f0";
+    !answered&&e(HintButton,{hint:hint}),
+    e('div',{style:{display:"flex",flexDirection:"column",gap:10}},options.map(function(o,i){
+      var bg="rgba(255,255,255,0.04)",bd="rgba(255,255,255,0.1)",tc="#e2e8f0";
       if(answered){if(i===correctIdx){bg="rgba(74,222,128,0.15)";bd="#4ade80";tc="#4ade80";}else if(i===selectedIdx){bg="rgba(239,68,68,0.15)";bd="#ef4444";tc="#ef4444";}}
-      return e('button',{key:i,onClick:()=>!answered&&onAnswer(i),disabled:answered,style:{background:bg,border:"1.5px solid "+bd,borderRadius:10,padding:"14px 18px",cursor:answered?"default":"pointer",textAlign:"left",fontSize:14,color:tc,fontWeight:500,fontFamily:"inherit",opacity:answered&&i!==correctIdx&&i!==selectedIdx?0.4:1}},
+      return e('button',{key:i,onClick:function(){if(!answered)onAnswer(i);},disabled:answered,style:{background:bg,border:"1.5px solid "+bd,borderRadius:10,padding:"14px 18px",cursor:answered?"default":"pointer",textAlign:"left",fontSize:14,color:tc,fontWeight:500,fontFamily:"inherit",opacity:answered&&i!==correctIdx&&i!==selectedIdx?0.4:1}},
         e('span',{style:{fontFamily:"monospace",marginRight:10,opacity:0.5,fontSize:12}},String.fromCharCode(65+i)),o);
     })));
 }
 
 function OrderingChallenge({challenge,onComplete}){
-  const[items,setItems]=useState(()=>shuffle(challenge.items));
+  const[items,setItems]=useState(function(){return shuffle(challenge.items);});
   const[done,setDone]=useState(false);
   const[ok,setOk]=useState(false);
-  const mv=(f,t)=>{const n=[...items];const[m]=n.splice(f,1);n.splice(t,0,m);setItems(n);};
-  const go=()=>{const c=items.every((it,i)=>it===challenge.items[i]);setOk(c);setDone(true);setTimeout(()=>onComplete(c),1500);};
+  var mv=function(f,t){var n=[...items];var m=n.splice(f,1)[0];n.splice(t,0,m);setItems(n);};
+  var go=function(){var c=items.every(function(it,i){return it===challenge.items[i];});setOk(c);setDone(true);setTimeout(function(){onComplete(c);},1500);};
   return e('div',null,
     e('div',{style:{fontSize:17,fontWeight:600,color:"#f1f5f9",lineHeight:1.5,marginBottom:8}},challenge.q),
     !done&&e(HintButton,{hint:challenge.hint}),
     e('div',{style:{fontSize:12,color:"#94a3b8",marginBottom:12}},"Tap arrows to reorder, then submit."),
-    e('div',{style:{display:"flex",flexDirection:"column",gap:6}},items.map((it,i)=>{
-      let bg="rgba(255,255,255,0.04)",bd="rgba(255,255,255,0.1)";
+    e('div',{style:{display:"flex",flexDirection:"column",gap:6}},items.map(function(it,i){
+      var bg="rgba(255,255,255,0.04)",bd="rgba(255,255,255,0.1)";
       if(done){if(it===challenge.items[i]){bg="rgba(74,222,128,0.12)";bd="#4ade8066";}else{bg="rgba(239,68,68,0.12)";bd="#ef444466";}}
       return e('div',{key:it,style:{display:"flex",alignItems:"center",gap:8,background:bg,border:"1px solid "+bd,borderRadius:8,padding:"10px 14px"}},
         e('span',{style:{fontFamily:"monospace",fontSize:12,color:"#64748b",minWidth:20}},(i+1)+"."),
         e('span',{style:{flex:1,fontSize:14,color:"#e2e8f0"}},it),
         !done&&e('div',{style:{display:"flex",flexDirection:"column",gap:2}},
-          e('button',{onClick:()=>i>0&&mv(i,i-1),style:{background:"none",border:"none",cursor:i>0?"pointer":"default",fontSize:14,color:i>0?"#94a3b8":"#334155",padding:"0 4px"}},"\u25B2"),
-          e('button',{onClick:()=>i<items.length-1&&mv(i,i+1),style:{background:"none",border:"none",cursor:i<items.length-1?"pointer":"default",fontSize:14,color:i<items.length-1?"#94a3b8":"#334155",padding:"0 4px"}},"\u25BC")));
+          e('button',{onClick:function(){if(i>0)mv(i,i-1);},style:{background:"none",border:"none",cursor:i>0?"pointer":"default",fontSize:14,color:i>0?"#94a3b8":"#334155",padding:"0 4px"}},"\u25B2"),
+          e('button',{onClick:function(){if(i<items.length-1)mv(i,i+1);},style:{background:"none",border:"none",cursor:i<items.length-1?"pointer":"default",fontSize:14,color:i<items.length-1?"#94a3b8":"#334155",padding:"0 4px"}},"\u25BC")));
     })),
     !done&&e('button',{onClick:go,style:{marginTop:16,width:"100%",padding:"12px",background:"linear-gradient(135deg,#8b5cf6,#6366f1)",border:"none",borderRadius:10,color:"white",fontWeight:700,fontSize:14,cursor:"pointer"}},"Check Order"),
     done&&e('div',{style:{marginTop:12,textAlign:"center",fontSize:15,fontWeight:700,color:ok?"#4ade80":"#ef4444"}},ok?"\u2713 Perfect order!":"\u2717 Not quite"));
 }
 
-// \u2500\u2500\u2500 MAIN APP \u2500\u2500\u2500
+// ─── MAIN APP ───────────────────────────────────────────────────────
 function App(){
   const[mode,setMode]=useState("menu");
   const[expandedStep,setExpandedStep]=useState(null);
@@ -418,84 +201,77 @@ function App(){
   const[studyF,setStudyF]=useState("all");
   const[lvlMsg,setLvlMsg]=useState(null);
   const[showLib,setShowLib]=useState(false);
-  // NEW: step filter for "test me on this step"
   const[stepFilter,setStepFilter]=useState(null);
+  const[sidebarTerm,setSidebarTerm]=useState(null);
 
-  const pick=useCallback(()=>{
-    // Build question pool based on difficulty AND step filter
-    let qPool=QUESTIONS.filter(q=>(diff===0||q.diff===diff)&&(stepFilter===null||q.step.includes(stepFilter)));
-    let oPool=ORDERING_CHALLENGES.filter(c=>(diff===0||c.diff===diff)&&(stepFilter===null||c.steps.includes(stepFilter)));
-
+  var pick=useCallback(function(){
+    var qPool=QUESTIONS.filter(function(q){return(diff===0||q.diff===diff)&&(stepFilter===null||q.step.includes(stepFilter));});
+    var oPool=ORDERING_CHALLENGES.filter(function(c){return(diff===0||c.diff===diff)&&(stepFilter===null||c.steps.includes(stepFilter));});
     if(qPool.length===0&&oPool.length===0){
-      // No questions for this combo \u2014 show all for this step regardless of difficulty
-      qPool=QUESTIONS.filter(q=>stepFilter===null||q.step.includes(stepFilter));
-      oPool=ORDERING_CHALLENGES.filter(c=>stepFilter===null||c.steps.includes(stepFilter));
+      qPool=QUESTIONS.filter(function(q){return stepFilter===null||q.step.includes(stepFilter);});
+      oPool=ORDERING_CHALLENGES.filter(function(c){return stepFilter===null||c.steps.includes(stepFilter);});
     }
-
-    if(Math.random()<0.2&&oPool.length>0){
-      setIsOrd(true);setOrdCh(oPool[Math.floor(Math.random()*oPool.length)]);setAnswered(false);setSelIdx(null);return;
-    }
+    if(Math.random()<0.2&&oPool.length>0){setIsOrd(true);setOrdCh(oPool[Math.floor(Math.random()*oPool.length)]);setAnswered(false);setSelIdx(null);return;}
     if(qPool.length===0){if(oPool.length>0){setIsOrd(true);setOrdCh(oPool[Math.floor(Math.random()*oPool.length)]);setAnswered(false);setSelIdx(null);}return;}
     setIsOrd(false);
-    const un=qPool.filter(q=>!asked.has(QUESTIONS.indexOf(q)));
+    var un=qPool.filter(function(q){return!asked.has(QUESTIONS.indexOf(q));});
     if(un.length>0)qPool=un;else setAsked(new Set());
-    const q=qPool[Math.floor(Math.random()*qPool.length)];
-    setAsked(p=>new Set(p).add(QUESTIONS.indexOf(q)));
-    const ao=shuffle([q.a,...q.wrong]);
+    var q=qPool[Math.floor(Math.random()*qPool.length)];
+    setAsked(function(p){return new Set(p).add(QUESTIONS.indexOf(q));});
+    var ao=shuffle([q.a].concat(q.wrong));
     setQuizQ(q);setQuizOpts(ao);setQuizCI(ao.indexOf(q.a));setAnswered(false);setSelIdx(null);
   },[diff,asked,stepFilter]);
 
-  const handleAns=(idx)=>{
-    setSelIdx(idx);setAnswered(true);setTotalAnswered(t=>t+1);
-    if(idx===quizCI){const ns=streak+1;setStreak(ns);if(ns>bestStreak)setBestStreak(ns);setTotalCorrect(t=>t+1);
-      const g=getXP(quizQ.diff,ns);setLastGain(g);setShowPop(true);
-      const ol=getLevel(xp).level;const nx=xp+g;setXp(nx);
-      if(getLevel(nx).level>ol){setTimeout(()=>setLvlMsg(getLevel(nx).title),600);setTimeout(()=>setLvlMsg(null),3000);}
-      setTimeout(()=>setShowPop(false),1200);
+  var handleAns=function(idx){
+    setSelIdx(idx);setAnswered(true);setTotalAnswered(function(t){return t+1;});
+    if(idx===quizCI){var ns=streak+1;setStreak(ns);if(ns>bestStreak)setBestStreak(ns);setTotalCorrect(function(t){return t+1;});
+      var g=getXP(quizQ.diff,ns);setLastGain(g);setShowPop(true);
+      var ol=getLevel(xp).level;var nx=xp+g;setXp(nx);
+      if(getLevel(nx).level>ol){setTimeout(function(){setLvlMsg(getLevel(nx).title);},600);setTimeout(function(){setLvlMsg(null);},3000);}
+      setTimeout(function(){setShowPop(false);},1200);
     }else setStreak(0);
   };
 
-  const handleOrdDone=(c)=>{
-    setTotalAnswered(t=>t+1);
-    if(c){const ns=streak+1;setStreak(ns);if(ns>bestStreak)setBestStreak(ns);setTotalCorrect(t=>t+1);const g=getXP(ordCh.diff,ns)*2;setLastGain(g);setShowPop(true);setXp(x=>x+g);setTimeout(()=>setShowPop(false),1200);}
+  var handleOrdDone=function(c){
+    setTotalAnswered(function(t){return t+1;});
+    if(c){var ns=streak+1;setStreak(ns);if(ns>bestStreak)setBestStreak(ns);setTotalCorrect(function(t){return t+1;});var g=getXP(ordCh.diff,ns)*2;setLastGain(g);setShowPop(true);setXp(function(x){return x+g;});setTimeout(function(){setShowPop(false);},1200);}
     else setStreak(0);
-    setTimeout(()=>pick(),1800);
+    setTimeout(function(){pick();},1800);
   };
 
-  // "Test me on step X" handler
-  const handleTestStep=(stepId)=>{
-    setStepFilter(stepId);
-    setAsked(new Set());
-    setMode("quiz");
-  };
+  var handleTestStep=function(stepId){setStepFilter(stepId);setAsked(new Set());setMode("quiz");};
 
-  useEffect(()=>{if(mode==="quiz")pick();},[mode,diff,stepFilter]);
+  useEffect(function(){if(mode==="quiz")pick();},[mode,diff,stepFilter]);
 
-  const lvl=getLevel(xp);
-  const fSteps=studyF==="all"?STEPS:STEPS.filter(s=>s.phase===studyF);
-  const pct=lvl.next?((xp-lvl.prev)/(lvl.next-lvl.prev))*100:100;
-  const stepName=stepFilter?STEPS.find(s=>s.id===stepFilter)?.name:"";
-  const stepQCount=stepFilter?QUESTIONS.filter(q=>q.step.includes(stepFilter)).length+ORDERING_CHALLENGES.filter(c=>c.steps.includes(stepFilter)).length:0;
+  var lvl=getLevel(xp);
+  var fSteps=studyF==="all"?STEPS:STEPS.filter(function(s){return s.phase===studyF;});
+  var pct=lvl.next?((xp-lvl.prev)/(lvl.next-lvl.prev))*100:100;
+  var stepName=stepFilter?STEPS.find(function(s){return s.id===stepFilter;})?.name:"";
+  var stepQCount=stepFilter?QUESTIONS.filter(function(q){return q.step.includes(stepFilter);}).length+ORDERING_CHALLENGES.filter(function(c){return c.steps.includes(stepFilter);}).length:0;
 
   return e('div',{style:{minHeight:"100vh",background:"#0c0f1a",color:"#e2e8f0",fontFamily:"'Segoe UI',sans-serif"}},
     e('div',{style:{position:"fixed",inset:0,opacity:0.03,pointerEvents:"none",backgroundImage:"radial-gradient(circle at 25% 25%,#4ade80 1px,transparent 1px),radial-gradient(circle at 75% 75%,#60a5fa 1px,transparent 1px)",backgroundSize:"60px 60px"}}),
-    // HEADER
+
+    // ─── HEADER ─────────────────────────────────────────────────────
     e('div',{style:{position:"sticky",top:0,zIndex:100,background:"rgba(12,15,26,0.85)",backdropFilter:"blur(20px)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"12px 20px"}},
       e('div',{style:{maxWidth:720,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between"}},
         e('div',{style:{display:"flex",alignItems:"center",gap:10}},
-          mode!=="menu"&&e('button',{onClick:()=>{setMode("menu");setStepFilter(null);},style:{background:"none",border:"1px solid rgba(255,255,255,0.15)",borderRadius:8,color:"#94a3b8",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit"}},"\u2190 Menu"),
+          mode!=="menu"&&e('button',{onClick:function(){setMode("menu");setStepFilter(null);},style:{background:"none",border:"1px solid rgba(255,255,255,0.15)",borderRadius:8,color:"#94a3b8",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit"}},"\u2190 Menu"),
           e('div',null,e('div',{style:{fontSize:14,fontWeight:700,color:"#4ade80",fontFamily:"monospace",letterSpacing:1}},"SIMPLECELL TRAINER"),e('div',{style:{fontSize:10,color:"#64748b",letterSpacing:2}},"CS GENETICS 3' GEX v1.12"))),
         e('div',{style:{display:"flex",alignItems:"center",gap:12,position:"relative"}},
           showPop&&e('div',{style:{position:"absolute",top:-8,right:0,color:"#4ade80",fontWeight:700,fontSize:16,fontFamily:"monospace",animation:"xpPop 1.2s ease forwards",pointerEvents:"none"}},"+"+lastGain),
           e('div',{style:{textAlign:"right"}},e('div',{style:{fontSize:11,color:"#94a3b8",fontFamily:"monospace"}},"Lv."+lvl.level+" "+lvl.title),
             e('div',{style:{width:100,height:4,background:"rgba(255,255,255,0.1)",borderRadius:2,overflow:"hidden",marginTop:3}},e('div',{style:{height:"100%",borderRadius:2,transition:"width 0.5s",background:"linear-gradient(90deg,#4ade80,#22d3ee)",width:pct+"%"}}))),
           e('div',{style:{background:"rgba(74,222,128,0.1)",border:"1px solid rgba(74,222,128,0.25)",borderRadius:8,padding:"4px 10px",fontFamily:"monospace",fontSize:13,fontWeight:700,color:"#4ade80"}},xp+" XP")))),
-    // LEVEL UP
+
+    // ─── LEVEL UP OVERLAY ───────────────────────────────────────────
     lvlMsg&&e('div',{style:{position:"fixed",inset:0,zIndex:999,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(0,0,0,0.6)",backdropFilter:"blur(8px)",animation:"fadeIn 0.3s"}},
       e('div',{style:{textAlign:"center",animation:"levelUp 0.5s"}},e('div',{style:{fontSize:48,marginBottom:8}},"\u{1F389}"),e('div',{style:{fontSize:13,color:"#94a3b8",letterSpacing:3,textTransform:"uppercase"}},"Level Up!"),e('div',{style:{fontSize:28,fontWeight:700,color:"#4ade80",marginTop:4}},lvlMsg))),
-    // CONTENT
+
+    // ─── CONTENT AREA ───────────────────────────────────────────────
     e('div',{style:{maxWidth:720,margin:"0 auto",padding:"20px 16px 80px"}},
-      // MENU
+
+      // ═══ MENU ═══
       mode==="menu"&&e('div',{style:{animation:"slideUp 0.4s"}},
         e('div',{style:{textAlign:"center",marginBottom:32,marginTop:20}},
           e('div',{style:{fontSize:40,marginBottom:12}},"\u{1F9EC}"),
@@ -503,58 +279,59 @@ function App(){
           e('p',{style:{color:"#94a3b8",fontSize:14,marginTop:8,lineHeight:1.6}},"Master the CS Genetics 3' Gene Expression Assay."),
           e('p',{style:{color:"#64748b",fontSize:11,marginTop:4}},QUESTIONS.length+" questions \u00B7 "+ORDERING_CHALLENGES.length+" ordering \u00B7 "+STEPS.length+" steps")),
         totalAnswered>0&&e('div',{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:24}},
-          [{l:"Answered",v:totalAnswered,c:"#60a5fa"},{l:"Accuracy",v:Math.round(totalCorrect/totalAnswered*100)+"%",c:"#4ade80"},{l:"Streak",v:streak,c:"#fbbf24"},{l:"Best",v:bestStreak,c:"#f472b6"}].map(s=>
-            e('div',{key:s.l,style:{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:10,padding:"12px 8px",textAlign:"center"}},
-              e('div',{style:{fontSize:20,fontWeight:700,color:s.c,fontFamily:"monospace"}},s.v),e('div',{style:{fontSize:10,color:"#64748b",letterSpacing:1,textTransform:"uppercase",marginTop:2}},s.l)))),
+          [{l:"Answered",v:totalAnswered,c:"#60a5fa"},{l:"Accuracy",v:Math.round(totalCorrect/totalAnswered*100)+"%",c:"#4ade80"},{l:"Streak",v:streak,c:"#fbbf24"},{l:"Best",v:bestStreak,c:"#f472b6"}].map(function(s){return e('div',{key:s.l,style:{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:10,padding:"12px 8px",textAlign:"center"}},e('div',{style:{fontSize:20,fontWeight:700,color:s.c,fontFamily:"monospace"}},s.v),e('div',{style:{fontSize:10,color:"#64748b",letterSpacing:1,textTransform:"uppercase",marginTop:2}},s.l));})),
         e('div',{style:{display:"flex",flexDirection:"column",gap:12}},
-          e('button',{onClick:()=>setMode("study"),style:{background:"linear-gradient(135deg,rgba(74,222,128,0.08),rgba(34,211,238,0.08))",border:"1px solid rgba(74,222,128,0.2)",borderRadius:16,padding:"24px",textAlign:"left",cursor:"pointer",fontFamily:"inherit"}},
-            e('div',{style:{display:"flex",alignItems:"center",gap:12}},e('span',{style:{fontSize:28}},"\u{1F4D6}"),e('div',null,e('div',{style:{fontSize:18,fontWeight:700,color:"#4ade80"}},"Study Mode"),e('div',{style:{fontSize:13,color:"#94a3b8",marginTop:4}},"All 14 steps with thermocycler programs, master mixes, images, and a Test Me button for each step.")))),
-          e('button',{onClick:()=>{setStepFilter(null);setMode("quiz");},style:{background:"linear-gradient(135deg,rgba(139,92,246,0.08),rgba(236,72,153,0.08))",border:"1px solid rgba(139,92,246,0.2)",borderRadius:16,padding:"24px",textAlign:"left",cursor:"pointer",fontFamily:"inherit"}},
-            e('div',{style:{display:"flex",alignItems:"center",gap:12}},e('span',{style:{fontSize:28}},"\u26A1"),e('div',null,e('div',{style:{fontSize:18,fontWeight:700,color:"#8b5cf6"}},"Challenge Mode"),e('div',{style:{fontSize:13,color:"#94a3b8",marginTop:4}},"All questions, or filter by step and difficulty."))))),
+          e('button',{onClick:function(){setMode("study");},style:{background:"linear-gradient(135deg,rgba(74,222,128,0.08),rgba(34,211,238,0.08))",border:"1px solid rgba(74,222,128,0.2)",borderRadius:16,padding:"24px",textAlign:"left",cursor:"pointer",fontFamily:"inherit"}},
+            e('div',{style:{display:"flex",alignItems:"center",gap:12}},e('span',{style:{fontSize:28}},"\u{1F4D6}"),e('div',null,e('div',{style:{fontSize:18,fontWeight:700,color:"#4ade80"}},"Study Mode"),e('div',{style:{fontSize:13,color:"#94a3b8",marginTop:4}},"All 14 steps. Tap any reagent name for details, images, and scaling tables.")))),
+          e('button',{onClick:function(){setStepFilter(null);setMode("quiz");},style:{background:"linear-gradient(135deg,rgba(139,92,246,0.08),rgba(236,72,153,0.08))",border:"1px solid rgba(139,92,246,0.2)",borderRadius:16,padding:"24px",textAlign:"left",cursor:"pointer",fontFamily:"inherit"}},
+            e('div',{style:{display:"flex",alignItems:"center",gap:12}},e('span',{style:{fontSize:28}},"\u26A1"),e('div',null,e('div',{style:{fontSize:18,fontWeight:700,color:"#8b5cf6"}},"Challenge Mode"),e('div',{style:{fontSize:13,color:"#94a3b8",marginTop:4}},"Quiz with hints, XP, streaks. Filter by step or difficulty."))))),
         e('div',{style:{marginTop:32}},
           e('div',{style:{fontSize:11,fontWeight:700,color:"#64748b",letterSpacing:2,marginBottom:12}},"PROTOCOL PIPELINE"),
-          e('div',{style:{display:"flex",flexWrap:"wrap",gap:4}},STEPS.map((s,i)=>e('div',{key:s.id,style:{display:"flex",alignItems:"center",gap:4}},e('div',{style:{background:s.color+"15",border:"1px solid "+s.color+"33",borderRadius:6,padding:"4px 8px",fontSize:10,color:s.color,fontWeight:600,whiteSpace:"nowrap"}},s.icon+" "+s.id),i<STEPS.length-1&&e('span',{style:{color:"#334155",fontSize:10}},"\u2192")))))),
-      // STUDY
+          e('div',{style:{display:"flex",flexWrap:"wrap",gap:4}},STEPS.map(function(s,i){return e('div',{key:s.id,style:{display:"flex",alignItems:"center",gap:4}},e('div',{style:{background:s.color+"15",border:"1px solid "+s.color+"33",borderRadius:6,padding:"4px 8px",fontSize:10,color:s.color,fontWeight:600,whiteSpace:"nowrap"}},s.icon+" "+s.id),i<STEPS.length-1&&e('span',{style:{color:"#334155",fontSize:10}},"\u2192"));})))),
+
+      // ═══ STUDY ═══
       mode==="study"&&e('div',{style:{animation:"slideUp 0.4s"}},
-        e('button',{onClick:()=>setShowLib(!showLib),style:{width:"100%",marginBottom:16,background:showLib?"rgba(99,102,241,0.08)":"rgba(255,255,255,0.03)",border:"1px solid "+(showLib?"rgba(99,102,241,0.25)":"rgba(255,255,255,0.08)"),borderRadius:12,padding:"14px 18px",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}},
+        e('button',{onClick:function(){setShowLib(!showLib);},style:{width:"100%",marginBottom:16,background:showLib?"rgba(99,102,241,0.08)":"rgba(255,255,255,0.03)",border:"1px solid "+(showLib?"rgba(99,102,241,0.25)":"rgba(255,255,255,0.08)"),borderRadius:12,padding:"14px 18px",cursor:"pointer",fontFamily:"inherit",textAlign:"left"}},
           e('div',{style:{display:"flex",alignItems:"center",gap:10}},e('span',{style:{fontSize:20}},"\u{1F4D0}"),e('div',null,e('div',{style:{fontSize:14,fontWeight:700,color:"#818cf8"}},"Library Structure & Sequencing"),e('div',{style:{fontSize:11,color:"#94a3b8",marginTop:2}},"Schematic, reads, loading concentrations")),e('span',{style:{marginLeft:"auto",color:"#64748b",fontSize:16,transform:showLib?"rotate(180deg)":"none",transition:"transform 0.2s"}},"\u25BE"))),
         showLib&&e('div',{style:{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,padding:"20px",marginBottom:16}},
-          e('img',{src:"images/library_schematic.png",alt:"Library Structure",style:{width:"100%",borderRadius:8,marginBottom:16,border:"1px solid rgba(255,255,255,0.1)"}}),  
           e('div',{style:{fontSize:11,fontWeight:700,color:"#818cf8",letterSpacing:1.5,marginBottom:12}},"LIBRARY STRUCTURE (5'\u21923')"),
-          e('div',{style:{display:"flex",flexWrap:"wrap",gap:2,marginBottom:16}},LIBRARY_STRUCTURE.map((seg,i)=>e('div',{key:i,style:{background:seg.color+"15",border:"1px solid "+seg.color+"33",borderRadius:4,padding:"6px 8px",textAlign:"center",minWidth:55,flex:"1 1 auto"}},e('div',{style:{fontSize:9,color:seg.color,fontWeight:700,lineHeight:1.3}},seg.name),seg.read&&e('div',{style:{fontSize:8,color:"#94a3b8",marginTop:2}},seg.read)))),
+          e('div',{style:{display:"flex",flexWrap:"wrap",gap:2,marginBottom:16}},LIBRARY_STRUCTURE.map(function(seg,i){return e('div',{key:i,style:{background:seg.color+"15",border:"1px solid "+seg.color+"33",borderRadius:4,padding:"6px 8px",textAlign:"center",minWidth:55,flex:"1 1 auto"}},e('div',{style:{fontSize:9,color:seg.color,fontWeight:700,lineHeight:1.3}},seg.name),seg.read&&e('div',{style:{fontSize:8,color:"#94a3b8",marginTop:2}},seg.read));})),
           e('div',{style:{fontSize:12,color:"#e2e8f0",fontFamily:"monospace",lineHeight:1.8,marginBottom:12}},"R1: 92cy \u00B7 I1: 10cy \u00B7 I2: 10cy \u00B7 R2: 26cy"),
-          e('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}},SEQUENCER_TABLE.map(s=>e('div',{key:s.name,style:{background:"rgba(255,255,255,0.03)",borderRadius:6,padding:"8px 12px",display:"flex",justifyContent:"space-between"}},e('span',{style:{fontSize:12,color:"#94a3b8"}},s.name),e('span',{style:{fontSize:12,color:"#e2e8f0",fontWeight:600,fontFamily:"monospace"}},s.loading)))),
+          e('div',{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}},SEQUENCER_TABLE.map(function(s){return e('div',{key:s.name,style:{background:"rgba(255,255,255,0.03)",borderRadius:6,padding:"8px 12px",display:"flex",justifyContent:"space-between"}},e('span',{style:{fontSize:12,color:"#94a3b8"}},s.name),e('span',{style:{fontSize:12,color:"#e2e8f0",fontWeight:600,fontFamily:"monospace"}},s.loading));})),
           e('div',{style:{marginTop:12,fontSize:11,color:"#94a3b8"}},"30,000 reads/cell \u00B7 2% PhiX \u00B7 600\u2013800 bp avg")),
-        e('div',{style:{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}},["all","pre","post"].map(f=>e('button',{key:f,onClick:()=>setStudyF(f),style:{background:studyF===f?"rgba(74,222,128,0.15)":"rgba(255,255,255,0.03)",border:"1px solid "+(studyF===f?"rgba(74,222,128,0.3)":"rgba(255,255,255,0.08)"),borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:600,color:studyF===f?"#4ade80":"#94a3b8",cursor:"pointer",fontFamily:"inherit",textTransform:"uppercase",letterSpacing:1}},f==="all"?"All ("+STEPS.length+")":f==="pre"?"Pre-PCR ("+STEPS.filter(s=>s.phase==="pre").length+")":"Post-PCR ("+STEPS.filter(s=>s.phase==="post").length+")"))),
-        e('div',{style:{position:"relative"}},fSteps.map((step,i)=>e('div',{key:step.id,style:{position:"relative",paddingLeft:24}},
+        e('div',{style:{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}},["all","pre","post"].map(function(f){return e('button',{key:f,onClick:function(){setStudyF(f);},style:{background:studyF===f?"rgba(74,222,128,0.15)":"rgba(255,255,255,0.03)",border:"1px solid "+(studyF===f?"rgba(74,222,128,0.3)":"rgba(255,255,255,0.08)"),borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:600,color:studyF===f?"#4ade80":"#94a3b8",cursor:"pointer",fontFamily:"inherit",textTransform:"uppercase",letterSpacing:1}},f==="all"?"All ("+STEPS.length+")":f==="pre"?"Pre-PCR ("+STEPS.filter(function(s){return s.phase==="pre";}).length+")":"Post-PCR ("+STEPS.filter(function(s){return s.phase==="post";}).length+")");})),
+        e('div',{style:{position:"relative"}},fSteps.map(function(step,i){return e('div',{key:step.id,style:{position:"relative",paddingLeft:24}},
           i<fSteps.length-1&&e('div',{style:{position:"absolute",left:7,top:28,bottom:-8,width:2,background:"linear-gradient(to bottom,"+step.color+"44,"+(fSteps[i+1]?.color||step.color)+"44)"}}),
           e('div',{style:{position:"absolute",left:2,top:20,width:12,height:12,borderRadius:"50%",background:step.color,boxShadow:"0 0 8px "+step.color+"66",animation:expandedStep===step.id?"pulse 2s infinite":"none"}}),
-          e(StepCard,{step,isExpanded:expandedStep===step.id,onToggle:()=>setExpandedStep(expandedStep===step.id?null:step.id),onTestStep:handleTestStep}))))),
-      // QUIZ
+          e(StepCard,{step:step,isExpanded:expandedStep===step.id,onToggle:function(){setExpandedStep(expandedStep===step.id?null:step.id);},onTestStep:handleTestStep,onTap:setSidebarTerm}));}))),
+
+      // ═══ QUIZ ═══
       mode==="quiz"&&e('div',{style:{animation:"slideUp 0.4s"}},
-        // Step filter indicator
         stepFilter&&e('div',{style:{display:"flex",alignItems:"center",gap:8,marginBottom:16,background:"rgba(139,92,246,0.08)",border:"1px solid rgba(139,92,246,0.2)",borderRadius:10,padding:"10px 14px"}},
           e('span',{style:{fontSize:14}},"\u{1F3AF}"),
           e('div',{style:{flex:1}},
             e('div',{style:{fontSize:13,fontWeight:700,color:"#8b5cf6"}},"Step "+stepFilter+": "+stepName),
             e('div',{style:{fontSize:11,color:"#94a3b8"}},stepQCount+" questions available")),
-          e('button',{onClick:()=>{setStepFilter(null);setAsked(new Set());pick();},style:{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:"4px 10px",fontSize:11,color:"#94a3b8",cursor:"pointer",fontFamily:"inherit"}},"\u2715 All steps")),
-        // Difficulty
+          e('button',{onClick:function(){setStepFilter(null);setAsked(new Set());pick();},style:{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,padding:"4px 10px",fontSize:11,color:"#94a3b8",cursor:"pointer",fontFamily:"inherit"}},"\u2715 All steps")),
         e('div',{style:{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}},
-          [{v:0,l:"All Levels",c:"#94a3b8"},{v:1,l:"Easy",c:"#4ade80"},{v:2,l:"Medium",c:"#fbbf24"},{v:3,l:"Hard",c:"#ef4444"}].map(d=>e('button',{key:d.v,onClick:()=>{setDiff(d.v);setAsked(new Set());},style:{background:diff===d.v?d.c+"20":"rgba(255,255,255,0.03)",border:"1px solid "+(diff===d.v?d.c+"44":"rgba(255,255,255,0.08)"),borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:600,color:diff===d.v?d.c:"#64748b",cursor:"pointer",fontFamily:"inherit"}},d.l))),
-        // Streak
+          [{v:0,l:"All Levels",c:"#94a3b8"},{v:1,l:"Easy",c:"#4ade80"},{v:2,l:"Medium",c:"#fbbf24"},{v:3,l:"Hard",c:"#ef4444"}].map(function(d){return e('button',{key:d.v,onClick:function(){setDiff(d.v);setAsked(new Set());},style:{background:diff===d.v?d.c+"20":"rgba(255,255,255,0.03)",border:"1px solid "+(diff===d.v?d.c+"44":"rgba(255,255,255,0.08)"),borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:600,color:diff===d.v?d.c:"#64748b",cursor:"pointer",fontFamily:"inherit"}},d.l);})),
         streak>0&&e('div',{style:{display:"flex",alignItems:"center",gap:8,marginBottom:16,background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:10,padding:"8px 14px"}},
           e('span',{style:{fontSize:18}},"\u{1F525}"),e('span',{style:{fontSize:14,fontWeight:700,color:"#fbbf24",fontFamily:"monospace"}},streak+" streak"),e('span',{style:{fontSize:11,color:"#94a3b8"}},"+"+Math.min(streak,5)*5+" bonus XP")),
-        // Question
         e('div',{style:{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:16,padding:"24px"}},
           isOrd&&ordCh?e(OrderingChallenge,{key:JSON.stringify(ordCh),challenge:ordCh,onComplete:handleOrdDone}):
           quizQ?e(React.Fragment,null,
             e('div',{style:{display:"flex",gap:8,marginBottom:16}},
               e('span',{style:{fontSize:10,padding:"2px 8px",borderRadius:99,fontWeight:600,letterSpacing:1,background:quizQ.diff===1?"rgba(74,222,128,0.15)":quizQ.diff===2?"rgba(251,191,36,0.15)":"rgba(239,68,68,0.15)",color:quizQ.diff===1?"#4ade80":quizQ.diff===2?"#fbbf24":"#ef4444"}},quizQ.diff===1?"EASY":quizQ.diff===2?"MEDIUM":"HARD"),
               e('span',{style:{fontSize:10,padding:"2px 8px",borderRadius:99,fontWeight:600,letterSpacing:1,background:"rgba(255,255,255,0.06)",color:"#94a3b8"}},quizQ.cat.toUpperCase())),
-            e(QuizQuestion,{question:quizQ.q,options:quizOpts,onAnswer:handleAns,answered,selectedIdx:selIdx,correctIdx:quizCI,hint:quizQ.hint})):
-          e('div',{style:{textAlign:"center",padding:"40px 20px",color:"#64748b"}},"No questions match this filter. Try a different difficulty level or ",e('button',{onClick:()=>{setStepFilter(null);setAsked(new Set());},style:{background:"none",border:"none",color:"#8b5cf6",cursor:"pointer",fontFamily:"inherit",fontWeight:600,textDecoration:"underline"}},"show all steps"),".")),
-        answered&&!isOrd&&e('button',{onClick:pick,style:{marginTop:16,width:"100%",padding:"14px",background:"linear-gradient(135deg,#4ade80,#22d3ee)",border:"none",borderRadius:12,color:"#0c0f1a",fontWeight:700,fontSize:15,cursor:"pointer",fontFamily:"inherit",animation:"fadeIn 0.3s"}},"Next Question \u2192"))));
+            e(QuizQuestion,{question:quizQ.q,options:quizOpts,onAnswer:handleAns,answered:answered,selectedIdx:selIdx,correctIdx:quizCI,hint:quizQ.hint})):
+          e('div',{style:{textAlign:"center",padding:"40px 20px",color:"#64748b"}},"No questions match this filter. Try a different difficulty or ",e('button',{onClick:function(){setStepFilter(null);setAsked(new Set());},style:{background:"none",border:"none",color:"#8b5cf6",cursor:"pointer",fontFamily:"inherit",fontWeight:600,textDecoration:"underline"}},"show all steps"),".")),
+        answered&&!isOrd&&e('button',{onClick:pick,style:{marginTop:16,width:"100%",padding:"14px",background:"linear-gradient(135deg,#4ade80,#22d3ee)",border:"none",borderRadius:12,color:"#0c0f1a",fontWeight:700,fontSize:15,cursor:"pointer",fontFamily:"inherit",animation:"fadeIn 0.3s"}},"Next Question \u2192"))
+    ),
+
+    // ─── REAGENT SIDEBAR (backdrop + panel) ─────────────────────────
+    sidebarTerm&&e('div',{onClick:function(){setSidebarTerm(null);},style:{position:"fixed",inset:0,background:"rgba(0,0,0,0.4)",zIndex:199}}),
+    e(ReagentSidebar,{term:sidebarTerm,onClose:function(){setSidebarTerm(null);}})
+  );
 }
 
 ReactDOM.render(e(App), document.getElementById('root'));
