@@ -398,4 +398,44 @@ var REAGENT_DB = {
     ],
     usedIn: [3]
   },
+  "Figure 3": {
+    fullName: "Supernatant Removal Technique",
+    box: "Technique — Step 1D", capColor: "Used during cell washes",
+    image: "images/figure3-sup-removal.png",
+    handling: [
+      "Use a 200 µL pipette tip to remove bulk supernatant",
+      "Tilt V-bottom plate and aspirate from the side, away from pellet, intersection between plate wall and V-slope",
+      "If cell pellet forms a smear, remove the supernatant from the opposite side of the smear to ensure minimal cell loss",
+      "Follow up with a 20 µL tip for residual liquid",
+      "Minimal supernatant should remain — excess interferes with CPair/Cell binding"
+    ],
+    usedIn: [1]
+  },
+  "Figure 4": {
+    fullName: "Technique to disrupt cell-bead mix",
+    box: "Technique — Step 2", capColor: "Used before kinetic confinement",
+    image: "images/figure4-disrupting-cell-based-mix.png",
+    handling: [
+      "Use a 20 µL pipette tip",
+      "Tilt flat-bottom plate and aspirate from the bottom",
+      "Dispense around the top, middle and sides of the well",
+      "Repeat 20X SLOWLY"
+    ],
+    usedIn: [2]
+  },
+    "Figure 5": {
+    fullName: "Technique to mix KCB after adding the Cells-Cpair",
+    box: "Technique — Step 2", capColor: "Used during kinetic confinement",
+    image: "images/figure5-mixing-kcb.png",
+    handling: [
+      "Set pippeter to 80 \u00B5L",
+      "Slowly aspirate from the bottom of the tube",
+      "Raise pipette tips out of the liquid",
+      "Always dispense liquid above the meniscus",
+      "Solution needs to be homogeneous before proceeding to next step, which can be determined when refraction can no longer be observed in the tube.",
+      "Avoid introducing bubbles.",
+      "Repeat 20X SLOWLY"
+    ],
+    usedIn: [2]
+  },
 };
