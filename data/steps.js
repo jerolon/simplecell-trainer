@@ -59,9 +59,9 @@ var STEPS = [
         "Reconstitute CPM: +200 \u00B5L ice-cold dPBS \u2192 vortex 30s \u2192 quick spin = 6\u00D7 CPM",
         "Dilute: 1\u00D7 (20 \u00B5L 6\u00D7+100 \u00B5L dPBS) cell lines/PBMCs | 1.5\u00D7 (30+90) organoids | 2\u00D7 (40+80) primary",
         "Add 6 \u00B5L diluted CPM to cells in V-bottom, mix 5\u00D7 at 20 \u00B5L. Incubate on ice 20 min.",
-        "Wash 1: +175 \u00B5L dPBS+3.75% BSA \u2192 mix 5\u00D7 at 150 \u00B5L \u2192 500\u00D7g, 3 min, 4\u00B0C \u2192 remove sup",
-        "Wash 2: +200 \u00B5L dPBS+3.75% BSA \u2192 spin \u2192 remove sup",
-        "Wash 3: +200 \u00B5L dPBS (NO BSA) \u2192 spin \u2192 remove all sup + residual with 20 \u00B5L tip",
+        "Wash 1: +175 \u00B5L dPBS+3.75% BSA \u2192 mix 5\u00D7 at 150 \u00B5L \u2192 500\u00D7g, 3 min, 4\u00B0C \u2192 remove sup (see Figure 3 for technique)",
+        "Wash 2: +200 \u00B5L dPBS+3.75% BSA \u2192 spin \u2192 remove sup (see Figure 3 for technique)",
+        "Wash 3: +200 \u00B5L dPBS (NO BSA) \u2192 spin \u2192 remove all sup (see Figure 3 for technique) + residual with 20 \u00B5L tip",
         "Resuspend in 20 \u00B5L cold dPBS, mix 10\u00D7",
         "Transfer to flat-bottom with CPair. Mix 20\u00D7 at 20 \u00B5L \u2014 tilt plate, aspirate bottom/sides, dispense top",
         "Cover. Settle 40 min on ice \u2014 VIBRATION-FREE!"
@@ -81,11 +81,11 @@ var STEPS = [
     summary: "Disrupt settled cell-bead mix, combine with viscous KCB master mix, flash-freeze on dry ice.",
     details: [
       { sub: null, title: "Procedure",
-        // image: "images/step2-mixing.png",
+        image: "images/step2-cells2kcb.png",
         steps: [
-        "After 40 min: set pipette to 20 \u00B5L, mix 20\u00D7 slowly \u2014 tilt plate, aspirate from bottom, dispense around well",
+        "After 40 min: set pipette to 20 \u00B5L, mix 20\u00D7 slowly \u2014 tilt plate, aspirate from bottom, dispense around well (technique in Figure 4)",
         "Proceed immediately \u2014 transfer full volume (40\u201350 \u00B5L) Cells-CPair \u2192 80 \u00B5L KCB MM",
-        "Set pipette to 80 \u00B5L. Mix 15\u00D7 \u2014 aspirate bottom, raise tips OUT of liquid, dispense ABOVE meniscus",
+        "Set pipette to 80 \u00B5L. Mix 15\u00D7 \u2014 aspirate bottom, raise tips OUT of liquid, dispense ABOVE meniscus (technique in Figure 5)",
         "Must be homogeneous (no refraction). Avoid bubbles.",
         "Seal tubes. Immediately submerge fully in dry ice \u226540 min."
       ]}
