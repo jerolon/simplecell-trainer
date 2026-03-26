@@ -438,4 +438,29 @@ var REAGENT_DB = {
     ],
     usedIn: [2]
   },
+  "TRB": {
+    fullName: "Target RNA barcoding program",
+    box: "Thermocycler Programming",
+    image: "images/C100_biorad.jpg",
+    link: "https://knowledge-base.csgenetics.com/setting-up-the-trb-program",
+    handling: [
+      "We have C1000 Touch Thermal Cycler from BioRad",
+      "Specific Ramp rate is 1°C/s",
+      "Verify Total time is 7 min 53 s after the 4°C hold step",
+      "Time to 95°C should be 96s",
+      "Lid Temperature is 105°C"
+    ],
+    scaling: {
+      title: "TRB Program",
+      cols: ["Volume", "Time", "Temperature"],
+      rows: [
+        ["100 \u00B5L", "7 min 53 seconds", "4°C Hold"],
+        ["", "", "95°C - 15 Sec"],
+        ["", "", "55°C to 40°C  90 sec decreasing (1°C/6sec)"],
+        ["", "", "35°C to 20°C - for 135 sec decreasing (1°C/9sec)"],
+        ["", "", "20°C Hold"]
+      ]
+    },
+    usedIn: [3]
+  },
 };
