@@ -171,9 +171,10 @@ var STEPS = [
     summary: "Add RNaseH to digest RNA strand of RNA:cDNA hybrids.",
     thermoProgram: { name: "RNAH", vol: "22 \u00B5L", time: "~25 min", steps: "37\u00B0C 20min \u2192 65\u00B0C 5min \u2192 4\u00B0C hold" },
     details: [{ sub: null, title: "Procedure", steps: [
-      "Remove from TC \u2192 ice. Start RNAH. Quick spin.",
+      "Remove RNAse H from -20°C and place on ice",
+      "Remove tubes from ThermoCycler \u2192 ice. Start RNAH. Quick spin.",
       "Add 1.5 \u00B5L H (RNaseH). No mixing needed.",
-      "Seal, run RNAH. Volume = 22 \u00B5L."
+      "Seal tubes with lids, transfer to thermocycler and run RNAH. Volume = 22 \u00B5L."
     ]}],
     criticalNotes: ["No mixing required after adding RNaseH"]
   },
