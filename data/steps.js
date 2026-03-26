@@ -144,13 +144,14 @@ var STEPS = [
     icon: "\u{1F9F9}", color: "#a78bfa",
     summary: "Wash beads: WA off-magnet, then 2\u00D7 WB on-magnet.",
     details: [{ sub: null, title: "Procedure", steps: [
-      "On magnet: remove 180 \u00B5L sup \u2192 remove ~20 \u00B5L residual",
-      "Off magnet: +160 \u00B5L WA MM. Pipette 10\u00D7 at 120 \u00B5L to resuspend.",
-      "Magnet 2 min \u2192 remove 160 \u00B5L \u2192 remove ~10 \u00B5L residual",
-      "On magnet: +180 \u00B5L WB \u2192 30 sec \u2192 remove all",
-      "Repeat WB wash (2 total). Do NOT let beads dry."
+      "With tubes On magnet: carefully remove 180 \u00B5L sup without disturbing or touching the beads \u2192 remove ~20 \u00B5L residual",
+      "Tubes Off magnet: +160 \u00B5L WA MM. Pipette 10\u00D7 at 120 \u00B5L to resuspend without introducing bubbles. Some clumping might occur. Be sure to completely resuspend beads before proceeding",
+      "Tubes on Magnet 2 min until clear \u2192 remove 160 \u00B5L \u2192 remove ~10 \u00B5L residual without touching any beads",
+      "Keeping tubes On magnet: +180 \u00B5L WB \u2192 Incubate 30 sec \u2192 Remove all: first 180 \u00B5L and then 10 \u00B5L",
+      "Repeat WB wash (2 total). Do NOT let beads dry. Proceed immediatly"
     ]}],
-    criticalNotes: ["Do NOT let beads dry \u2014 proceed to RT immediately"]
+    criticalNotes: ["Do NOT let beads dry \u2014 proceed to RT immediately",
+                   "Some clumping might be noticed when resuspending beads with WA. Be sure to completely resuspend beads"]
   },
   {
     id: 5, name: "Reverse Transcription", duration: "45 min", phase: "pre",
