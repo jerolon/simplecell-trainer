@@ -231,13 +231,15 @@ var STEPS = [
   {
     id: 10, name: "Amplification PCR (PCR1)", duration: "30 min", phase: "post",
     icon: "\u{1F4C8}", color: "#f97316",
-    summary: "PCR amplify cDNA. 12 cy (cell lines) or 13 cy (PBMCs).",
+    summary: "PCR amplify cDNA. 12 cy (cell lines) or 13 cy (Primary cells).",
     masterMixes: [{ name: "Amp PCR MM (12 \u00B5L)", per1: "A1 10 + A2 2 \u00B5L", per8: "A1 88 + A2 17.6 (+10%)", note: "\u26A0 Keep A1 for PCR2!" }],
     thermoProgram: { name: "PCR1", vol: "40 \u00B5L", time: "25\u201330 min", steps: "98\u00B0C 45s \u2192 [98\u00B0C 15s \u2192 60\u00B0C 30s \u2192 72\u00B0C 30s] \u00D7 12/13 \u2192 72\u00B0C 1min \u2192 4\u00B0C" },
     details: [{ sub: null, title: "Procedure", steps: [
-      "Set PCR1: 12 cy (cell lines) or 13 (PBMCs)",
-      "Mix MM 15\u00D7. On ice: +12 \u00B5L MM to 28 \u00B5L eluate. Mix 5\u00D7.",
-      "Seal, run PCR1. Volume = 40 \u00B5L."
+      "Set PCR1: 13 cycles for Primary cells",
+      "Quick spin A1 and A2 reagents. Prepare Amp PCR MM. Store on ice until use. A1 tube will be used later?",
+      "Mix Amp PCR MM 15\u00D7 without introducing bubbles. On ice or cold block: +12 \u00B5L Amp PCR MM to 28 \u00B5L eluate from previous step. Mix well 5\u00D7.",
+      "Seal tubes with lids, transfer to thermocycler and run PCR1. Volume = 40 \u00B5L.",
+      "If continuing the same day, prepare Library Enrichment Beads ( EA )"
     ]}],
     criticalNotes: ["Keep A1 for Step 13!","Safe stop: -20\u00B0C \u22643 days"]
   },
@@ -247,8 +249,9 @@ var STEPS = [
     summary: "Dilute EA 1:1 with dPBS. Aliquot 17 \u00B5L/sample.",
     masterMixes: [{ name: "Diluted EA", per1: "10 \u00B5L EA + 10 \u00B5L dPBS", per8: "88 + 88 (+10%)", note: "Aliquot 17 \u00B5L/sample at RT." }],
     details: [{ sub: null, title: "Procedure", steps: [
-      "Vortex EA, pipette 10\u00D7. Dilute 1:1 with dPBS. Mix 10\u00D7.",
-      "Aliquot 17 \u00B5L diluted EA per sample. RT."
+      "Vortex EA and pipette 10\u00D7 to fully homogenize. Tranfer volume according to number of samples to a 1.5 mL tube",
+      "Dilute 1:1 with dPBS. Mix 10\u00D7.",
+      "Aliquot 17 \u00B5L diluted EA per sample in a new set fo strip tubes. Set aside at Room Temperature."
     ]}],
     criticalNotes: []
   },
