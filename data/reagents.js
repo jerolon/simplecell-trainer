@@ -216,7 +216,7 @@ var REAGENT_DB = {
 
   "H": {
     fullName: "RNase H",
-    box: "Box 1 (\u221220\u00B0C)", capColor: "Black cap",
+    box: "Box 1 (\u221220\u00B0C)", capColor: "Magenta cap",
     image: "images/CSGenminus20.jpeg",
     handling: ["1.5 \u00B5L/sample", "No mixing needed after adding", "Keep on ice"],
     usedIn: [6]
@@ -479,7 +479,7 @@ var REAGENT_DB = {
       "Lid Temperature is 105°C"
     ],
     scaling: {
-      title: "TRB Program",
+      title: "RT Program",
       cols: ["Temperature", "Time"],
       rows: [
         ["4°C", "4°C Hold"],
@@ -488,10 +488,33 @@ var REAGENT_DB = {
         ["40°C", "2 min"],
         ["50°C", "15 min"],
         ["55°C", "15 min"],
-        ["58°C", "3 min"],
+        ["98°C", "3 min"],
         ["4°C", " Hold"]
       ]
     },
     usedIn: [3,5]
+  },
+  "RNAH": {
+    fullName: "RNase Treatment program",
+    box: "Thermocycler Programming",
+    image: "images/C100_biorad.jpg",
+    handling: [
+      "We have C1000 Touch Thermal Cycler from BioRad",
+      "Volume: 22 \u00B5L",
+      "Total time approx 25 minutes",
+      "Used in step 6. RNAseH treatment",
+      "Lid Temperature is 105°C"
+    ],
+    scaling: {
+      title: "RNAH Program",
+      cols: ["Temperature", "Time"],
+      rows: [
+        ["4°C", "4°C Hold"],
+        ["37°C", "20 min"],
+        ["65°C", "5 min"],
+        ["4°C", " Hold"]
+      ]
+    },
+    usedIn: [6]
   },
 };
