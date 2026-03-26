@@ -185,12 +185,16 @@ var STEPS = [
     masterMixes: [{ name: "3S MM (10 \u00B5L)", per1: "S1A 6.7 + S1B 2.7 + S2 0.6 \u00B5L", per8: "S1A 59 + S1B 23.8 + S2 5.3 (+10%)", note: "Vortex S1A, S1B. Do NOT vortex S2." }],
     thermoProgram: { name: "3S", vol: "32 \u00B5L", time: "22\u201325 min", steps: "75\u00B0C \u2192 20\u00B0C ramp (2.5\u00B0C/min = 22 min) \u2192 4\u00B0C hold" },
     details: [{ sub: null, title: "Procedure", steps: [
-      "Vortex S1A + S1B (S1A precipitates!). Do NOT vortex S2.",
-      "Prepare 3S MM. Mix 10\u00D7.",
-      "On ice: add 10 \u00B5L 3S MM. Mix 15\u00D7 at 20 \u00B5L.",
-      "Seal, run 3S. Volume = 32 \u00B5L."
+      "Remove S1A, S1B and S2 from -20°C and place on ice. Place DNA purification beads at room Temperature",
+      "Vortex S1A + S1B (S1A precipitates during storage!). Do NOT vortex S2. Ensure S1A agent fully disolves before use",
+      "Quick spin S1A, S1B and S2. Prepare 3S MM and store on ice until use. Mix 10\u00D7.",
+      "Remove samples from thermocycler and place On ice";
+      "Start the 3S program on the thermocycler",
+      "Quick spin samples on benchtop centrifugue: add 10 \u00B5L 3S MM. Mix 15\u00D7 at 20 \u00B5L. Be sure to disrupt the beads until homogeneous",
+      "Seal tubes with lids, transfer to thermocycler run 3S program. Volume = 32 \u00B5L."
     ]}],
-    criticalNotes: ["S1A precipitates \u2014 vortex until dissolved"]
+    criticalNotes: ["S1A precipitates \u2014 vortex until dissolved",
+                   "When 3S MM is added, be sure to disrupt the beads from the bottom of the tube until homogeneous"]
   },
   {
     id: 8, name: "Proteinase K Treatment", duration: "30 min", phase: "pre",
