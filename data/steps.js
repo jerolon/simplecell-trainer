@@ -213,13 +213,18 @@ var STEPS = [
     id: 9, name: "Post-3S Clean-up (SPRI)", duration: "25 min", phase: "pre",
     icon: "\u{1F4A7}", color: "#38bdf8",
     summary: "SPRI purification. 80% EtOH \u00D73. Elute 30 \u00B5L \u2192 transfer 28 \u00B5L.",
-    details: [{ sub: null, title: "Procedure (RT)", steps: [
-      "+20 \u00B5L nfH\u2082O. +75 \u00B5L DNA Purification beads. Mix 10\u00D7.",
-      "5 min RT \u2192 magnet 2 min \u2192 remove 105 \u00B5L",
-      "Wash \u00D73: +180 \u00B5L 80% EtOH \u2192 1 min \u2192 remove all",
-      "Dry pellet to matte (2\u20135 min).",
-      "Off magnet: +30 \u00B5L nfH\u2082O. 5 min RT. (Make Amp PCR MM now!)",
-      "Magnet 2 min \u2192 transfer 28 \u00B5L to new tube."
+    masterMixes: [{ name: "80 % EtOH (15 mL)", per8: "12 mL 100% Ethanol + 3 mL nfH20", note: "\u26A0 Prepare Fresh!!" }],
+    details: [{ sub: null, title: "Procedure (Room Temperature)", steps: [
+      "Take A1 and A2 from the -20°C box and place on ice",
+      "+20 \u00B5L nfH\u2082O to the sample from PK step.",
+      "+75 \u00B5L DNA Purification beads. Mix 10\u00D7. Ensure DNA purification beads are well mixed before use",
+      "Incubate 5 min RT \u2192 magnet 2 min or until supernatant clear \u2192 remove 105 \u00B5L supernatant carefully",
+      "Wash \u00D73: +180 \u00B5L 80% EtOH while tubes are on magnet without disturbing beads \u2192 wait 1 min \u2192 remove all supernatant",
+      "After final wash, further remove 10-20 \u00B5L to remove residual EtOH",
+      "Dry pellet to matte (not glossy: approx 2\u20135 min). Do not overdry",
+      "Tubes Off magnet: +30 \u00B5L nfH\u2082O. Resuspend pellet by pippeting. Incubate 5 min RT. (Make Amp PCR MM now!)",
+      "After incubation, quick spin samples and place on Magnet 2 min \u2192 transfer 28 \u00B5L supernatant to new 0.2mL tube.",
+      "Avoid taking beads with the sample. Beads can be discarded"
     ]}],
     criticalNotes: ["Fresh 80% EtOH with ddH\u2082O","Use 5-min elution to prep Amp PCR MM"]
   },
