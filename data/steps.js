@@ -43,7 +43,7 @@ var STEPS = [
         "Magnet 1 min RT \u2192 remove sup (150 / 300 \u00B5L). Pellet is small \u2014 slides down!",
         "Wash: off magnet \u2192 +300 \u00B5L cold dPBS, pipette 5\u00D7 \u2192 magnet 1 min \u2192 remove 300 \u00B5L",
         "Resuspend: +150 \u00B5L (8) or 300 \u00B5L (16) cold dPBS, pipette 10\u00D7",
-        "Into pre-coated wells: 20 \u00B5L CPair (PBMCs/Organoids) or 15 \u00B5L CPair + 5 \u00B5L dPBS (Cell Lines)",
+        "Into pre-coated wells: 20 \u00B5L CPair (Primary Tissue) or 15 \u00B5L CPair + 5 \u00B5L dPBS (Cell Lines)",
         "Cover, store at 4\u00B0C \u2014 do not freeze. Unused washed CPair good for 1 month at 4\u00B0C."
       ]},
       { sub: "1C", title: "KCB Master Mix Prep", image: "images/step1d-kcb.png", steps: [
