@@ -467,4 +467,32 @@ var REAGENT_DB = {
     },
     usedIn: [3]
   },
+  "RT program": {
+    fullName: "Reverse transcription program",
+    box: "Thermocycler Programming",
+    image: "images/C100_biorad.jpg",
+    handling: [
+      "We have C1000 Touch Thermal Cycler from BioRad",
+      "Volume: 20 \u00B5L",
+      "Total time approx 40 minutes",
+      "Started after end step 3 Barcoding and RNA captured but used in step 5 (Reverse Transcription)",
+      "Lid Temperature is 105°C"
+    ],
+    scaling: {
+      title: "TRB Program",
+      cols: ["Temperature", "Time"],
+      rows: [
+        ["4°C", "4°C Hold"],
+        ["20°C", "2 min"],
+        ["30°C", "2 min"],
+        ["40°C", "2 min"],
+        ["50°C", "15 min"],
+        ["55°C", "15 min"],
+        ["58°C", "3 min"],
+        ["4°C", " Hold"]
+      ]
+    },
+    usedIn: [3,5]
+  },
+};
 };
