@@ -537,6 +537,6 @@ var REAGENT_DB = {
         ["4°C", " Hold"]
       ]
     },
-    usedIn: [6]
+    usedIn: [7]
   },
 };
