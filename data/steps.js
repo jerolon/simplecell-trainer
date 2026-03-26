@@ -38,7 +38,7 @@ var STEPS = [
       { sub: "1B", title: "CPair Preparation",
         image: "images/step1b-cpair.png",
         steps: [
-        "Tap tube on bench (never vortex). Pipette at 150 \u00B5L, 10\u00D7 until homogeneous. Avoid warming with hands.",
+        "Tap tube on bench (never vortex). Pipette at 150 \u00B5L, 10\u00D7 until homogeneous. Avoid warming with hands.  Do not let solution sit for more than 30 sec before next step",
         "Transfer to 1.5 mL tube: 170 \u00B5L (8-sample kit) or 340 \u00B5L (16-sample kit)",
         "Magnet 1 min RT \u2192 remove sup (150 / 300 \u00B5L). Pellet is small \u2014 slides down!",
         "Wash: off magnet \u2192 +300 \u00B5L cold dPBS, pipette 5\u00D7 \u2192 magnet 1 min \u2192 remove 300 \u00B5L",
