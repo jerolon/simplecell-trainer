@@ -159,9 +159,9 @@ var STEPS = [
     summary: "Add RT master mix to cleaned beads on ice, run RT program.",
     thermoProgram: { name: "RT", vol: "20 \u00B5L", time: "~40 min", steps: "20\u00B0C 2min \u2192 30\u00B0C 2min \u2192 40\u00B0C 2min \u2192 50\u00B0C 15min \u2192 55\u00B0C 15min \u2192 98\u00B0C 3min \u2192 4\u00B0C hold" },
     details: [{ sub: null, title: "Procedure", steps: [
-      "Remove from magnet \u2192 ice. Add 20 \u00B5L RT MM.",
-      "Pipette 15\u00D7 at 15 \u00B5L. If clumps: mix 10\u201320\u00D7 more.",
-      "Seal, run RT. Volume = 20 \u00B5L."
+      "Remove from magnet \u2192 place on ice. Add 20 \u00B5L RT MM to each tube with washed beads.",
+      "Pipette 15\u00D7 at 15 \u00B5L. Careful not introduce bubbles. If clumps: mix 10\u201320\u00D7 more.",
+      "Seal tubes with lids, run RT program. Volume = 20 \u00B5L. Runtime approx 40 minutes."
     ]}],
     criticalNotes: ["Lid 105\u00B0C for ALL programs","Keep mixing until clumps break"]
   },
