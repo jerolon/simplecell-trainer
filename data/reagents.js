@@ -23,13 +23,15 @@ var REAGENT_DB = {
     fullName: "Cell Pairing Beads",
     box: "Box 2 (4\u00B0C)", capColor: "Green cap",
     image: "images/CSGen4C.jpeg",
+    link : "http://knowledge-base.csgenetics.com/knowledge-base/using-cpair-after-one-month",
     handling: [
       "Do NOT vortex \u2014 tap tube on bench, then pipette 10\u00D7",
        "During mixing you can use the solution to wash droplets from the side of the tube",
       "Avoid warming with hands",
       "Do not let solution sit for more than 30 sec before next step",
       "Pellet is small and slides \u2014 be careful on magnet",
-      "Unused washed CPair: 4\u00B0C for up to 1 month"
+      "Unused washed CPair: 4\u00B0C for up to 1 month",
+      "For use after one month, follow more info link"
     ],
     usedIn: [1]
   },
