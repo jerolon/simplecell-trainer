@@ -562,4 +562,31 @@ var REAGENT_DB = {
     },
     usedIn: [8]
   },
+    "PCR1": {
+    fullName: "Amplification PCR program",
+    box: "Thermocycler Programming",
+    image: "images/C100_biorad.jpg",
+    handling: [
+      "We have C1000 Touch Thermal Cycler from BioRad",
+      "Volume: 40 \u00B5L",
+      "Total time approx 25-30 minutes",
+      "Used in step 10. Amplification PCR1",
+      "Lid Temperature is 105°C"
+    ],
+    scaling: {
+      title: "PCR1 Program",
+      cols: ["Temperature", "Time", "Cycles"],
+      rows: [
+        ["4°C", "4°C Hold", "1"],
+        ["98°C", "45 min", "1"],
+        ["13 cycles of", "", "13"],
+        ["98°C", "15 sec", "13"],
+        ["60°C", "30 sec", "13"],
+        ["72°C", "30 sec", "13"],
+        ["72°C", "1 min", "1"],
+        ["4°C", " Hold", ""]
+      ]
+    },
+    usedIn: [10]
+  },
 };
