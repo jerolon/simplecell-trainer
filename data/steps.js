@@ -115,20 +115,27 @@ var STEPS = [
     thermoProgram: { name: "TRB", vol: "100 \u00B5L", time: "6\u201310 min", steps: "95\u00B0C 15s \u2192 55\u219240\u00B0C (1\u00B0C/6s = 90s) \u2192 35\u219220\u00B0C (1\u00B0C/9s = 135s) \u2192 20\u00B0C hold" },
     details: [
       { sub: null, title: "DTT & Master Mix Prep", steps: [
+        "Start TRB. Only the 4°C hold",
         "166 \u00B5M DTT: 2 \u00B5L 1M \u2192 998 \u00B5L nfH\u2082O = 2 mM. Then 83 \u00B5L 2mM \u2192 917 \u00B5L nfH\u2082O = 166 \u00B5M.",
-        "Prepare DB MM, WA MM, and RT MM per tables. Mix each 10\u00D7."
+        "Prepare DB, WA, and RT MM (R1A, R1B, R1C, R2, R3) per tables.",
+        "Quick spin DB reagent and mix thoroughly with pipette 10X so the beads are homogeneous. DO NOT VORTEX. Prepare DB MM as described. Place on ice until use",
+        "Ensure precipitate has dissolved by vortexing WA. Quick spin and prepare WA MM. Store at ROOM TEMPERATURE until use.",
+        "Mix each 10\u00D7. Place unused reagents back into noted storage conditions after preparing each mix.",
+        "Vortex R1A, R1B and R1C. DO NOT vortex R2 and R3. Quick spin all R reagents. Prepare RT MM and mix up and down 10X. Store on ice until use and place the R reagents back"
       ]},
       { sub: null, title: "Barcoding", steps: [
-        "Start TRB. Transfer frozen samples from dry ice \u2192 thermocycler \u2192 run TRB",
+        "Transfer frozen samples (Cells + CPair + KCB MM) directly from dry ice \u2192 thermocycler \u2192 run TRB",
         "When done: proceed immediately at RT",
-        "Mix DB MM 10\u00D7 to resuspend. Add 82 \u00B5L DB MM per sample.",
-        "Set pipette to 120 \u00B5L, mix 10\u00D7",
+        "Mix DB MM 10\u00D7 to resuspend. Add 82 \u00B5L DB MM per sample in 8-strip tube.",
+        "Set pipette to 120 \u00B5L, mix 10\u00D7 with Figure 5 technique, but only 10X",
         "Magnet 5 min until clear. Start RT program."
       ]}
     ],
     criticalNotes: [
       "TRB ramp rates CRITICAL \u2014 verify thermocycler",
-      "Do NOT vortex DB",
+      "Use freshly made 1M DTT solution or the frozen 1M DTT drom Step 1",
+      "Vortex WA, R1A, R1B and R1C",
+      "Do NOT vortex DB, R2 nor R3",
       "Proceed immediately after TRB"
     ]
   },
