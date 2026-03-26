@@ -517,7 +517,7 @@ var REAGENT_DB = {
     },
     usedIn: [6]
   },
-    "3S": {
+    "SSS": {
     fullName: "Second Strand Synthesis program",
     box: "Thermocycler Programming",
     image: "images/C100_biorad.jpg",
