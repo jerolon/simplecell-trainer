@@ -495,4 +495,3 @@ var REAGENT_DB = {
     usedIn: [3,5]
   },
 };
-};
