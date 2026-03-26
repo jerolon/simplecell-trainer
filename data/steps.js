@@ -188,7 +188,7 @@ var STEPS = [
       "Remove S1A, S1B and S2 from -20°C and place on ice. Place DNA purification beads at room Temperature",
       "Vortex S1A + S1B (S1A precipitates during storage!). Do NOT vortex S2. Ensure S1A agent fully disolves before use",
       "Quick spin S1A, S1B and S2. Prepare 3S MM and store on ice until use. Mix 10\u00D7.",
-      "Remove samples from thermocycler and place On ice";
+      "Remove samples from thermocycler and place On ice",
       "Start the SSS (3S) program on the thermocycler",
       "Quick spin samples on benchtop centrifugue: add 10 \u00B5L 3S MM. Mix 15\u00D7 at 20 \u00B5L. Be sure to disrupt the beads until homogeneous",
       "Seal tubes with lids, transfer to thermocycler run SSS (3S)"" program. Volume = 32 \u00B5L."
