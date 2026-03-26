@@ -189,9 +189,9 @@ var STEPS = [
       "Vortex S1A + S1B (S1A precipitates during storage!). Do NOT vortex S2. Ensure S1A agent fully disolves before use",
       "Quick spin S1A, S1B and S2. Prepare 3S MM and store on ice until use. Mix 10\u00D7.",
       "Remove samples from thermocycler and place On ice";
-      "Start the 3S program on the thermocycler",
+      "Start the SSS (3S) program on the thermocycler",
       "Quick spin samples on benchtop centrifugue: add 10 \u00B5L 3S MM. Mix 15\u00D7 at 20 \u00B5L. Be sure to disrupt the beads until homogeneous",
-      "Seal tubes with lids, transfer to thermocycler run 3S program. Volume = 32 \u00B5L."
+      "Seal tubes with lids, transfer to thermocycler run SSS (3S)"" program. Volume = 32 \u00B5L."
     ]}],
     criticalNotes: ["S1A precipitates \u2014 vortex until dissolved",
                    "When 3S MM is added, be sure to disrupt the beads from the bottom of the tube until homogeneous"]
