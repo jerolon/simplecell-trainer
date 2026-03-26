@@ -224,7 +224,7 @@ var REAGENT_DB = {
 
   "K": {
     fullName: "Proteinase K",
-    box: "Box 1 (\u221220\u00B0C)", capColor: "Black cap",
+    box: "Box 1 (\u221220\u00B0C)", capColor: "Red cap",
     image: "images/CSGenminus20.jpeg",
     handling: [
       "1 \u00B5L/sample \u2014 smallest addition in protocol",
@@ -538,5 +538,28 @@ var REAGENT_DB = {
       ]
     },
     usedIn: [7]
+  },
+    "PK": {
+    fullName: "Proteinase K program",
+    box: "Thermocycler Programming",
+    image: "images/C100_biorad.jpg",
+    handling: [
+      "We have C1000 Touch Thermal Cycler from BioRad",
+      "Volume: 33 \u00B5L",
+      "Total time approx 25 minutes",
+      "Used in step 8. Proteinase K treatment",
+      "Lid Temperature is 105°C"
+    ],
+    scaling: {
+      title: "PK Program",
+      cols: ["Temperature", "Time"],
+      rows: [
+        ["4°C", "4°C Hold"],
+        ["37°C", "15 min"],
+        ["55°C", "10 min"],
+        ["4°C", " Hold"]
+      ]
+    },
+    usedIn: [8]
   },
 };
