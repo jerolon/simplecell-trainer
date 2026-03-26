@@ -517,4 +517,26 @@ var REAGENT_DB = {
     },
     usedIn: [6]
   },
+    "3S": {
+    fullName: "Second Strand Synthesis program",
+    box: "Thermocycler Programming",
+    image: "images/C100_biorad.jpg",
+    handling: [
+      "We have C1000 Touch Thermal Cycler from BioRad",
+      "Volume: 32 \u00B5L",
+      "Total time approx 25 minutes",
+      "Used in step 7. Second strand synthesis",
+      "Lid Temperature is 105°C"
+    ],
+    scaling: {
+      title: "3S Program",
+      cols: ["Temperature", "Time"],
+      rows: [
+        ["4°C", "4°C Hold"],
+        ["75°C to 20°C", "22 min decreasing (2.5°C/1min)"],
+        ["4°C", " Hold"]
+      ]
+    },
+    usedIn: [6]
+  },
 };
