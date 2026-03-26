@@ -199,12 +199,13 @@ var STEPS = [
   {
     id: 8, name: "Proteinase K Treatment", duration: "30 min", phase: "pre",
     icon: "\u{1F513}", color: "#e879f9",
-    summary: "Add Proteinase K to release cDNA from beads.",
+    summary: "Add Proteinase K to release cDNA from beads??.",
     thermoProgram: { name: "PK", vol: "33 \u00B5L", time: "~25 min", steps: "37\u00B0C 15min \u2192 55\u00B0C 10min \u2192 4\u00B0C hold" },
     details: [{ sub: null, title: "Procedure", steps: [
-      "Remove \u2192 ice. Start PK.",
+      "Proteinase K is in box 1 at -20°C, place on ice",
+      "After SSS program (3S) has finished \u2192 Remove \u2192 ice. Start PK program.",
       "Add 1 \u00B5L K. Mix 10\u00D7 at 20 \u00B5L.",
-      "Run PK. Volume = 33 \u00B5L."
+      "Run PK program on thermocycler. Volume = 33 \u00B5L."
     ]}],
     criticalNotes: []
   },
