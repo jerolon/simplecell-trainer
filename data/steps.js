@@ -191,7 +191,7 @@ var STEPS = [
       "Remove samples from thermocycler and place On ice",
       "Start the SSS (3S) program on the thermocycler",
       "Quick spin samples on benchtop centrifugue: add 10 \u00B5L 3S MM. Mix 15\u00D7 at 20 \u00B5L. Be sure to disrupt the beads until homogeneous",
-      "Seal tubes with lids, transfer to thermocycler run SSS (3S)"" program. Volume = 32 \u00B5L."
+      "Seal tubes with lids, transfer to thermocycler run SSS (3S) program. Volume = 32 \u00B5L."
     ]}],
     criticalNotes: ["S1A precipitates \u2014 vortex until dissolved",
                    "When 3S MM is added, be sure to disrupt the beads from the bottom of the tube until homogeneous"]
