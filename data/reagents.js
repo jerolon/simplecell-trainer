@@ -578,7 +578,7 @@ var REAGENT_DB = {
       cols: ["Temperature", "Time", "Cycles"],
       rows: [
         ["4°C", "4°C Hold", "1"],
-        ["98°C", "45 min", "1"],
+        ["98°C", "45 sec", "1"],
         ["13 cycles of", "", "13"],
         ["98°C", "15 sec", "13"],
         ["60°C", "30 sec", "13"],
@@ -588,5 +588,33 @@ var REAGENT_DB = {
       ]
     },
     usedIn: [10]
+  },
+
+    "PCR2": {
+    fullName: "Indexing PCR program",
+    box: "Thermocycler Programming",
+    image: "images/C100_biorad.jpg",
+    handling: [
+      "We have C1000 Touch Thermal Cycler from BioRad",
+      "Volume: 40 \u00B5L",
+      "Total time approx 15-20 minutes",
+      "Used in step 13. Indexing PCR2",
+      "Lid Temperature is 105°C"
+    ],
+    scaling: {
+      title: "PCR2 Program",
+      cols: ["Temperature", "Time", "Cycles"],
+      rows: [
+        ["4°C", "4°C Hold", "1"],
+        ["98°C", "45 sec", "1"],
+        ["7 cycles of", "", "7"],
+        ["98°C", "15 sec", "7"],
+        ["60°C", "30 sec", "7"],
+        ["72°C", "30 sec", "7"],
+        ["72°C", "1 min", "1"],
+        ["4°C", " Hold", ""]
+      ]
+    },
+    usedIn: [13]
   },
 };
