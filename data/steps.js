@@ -269,7 +269,7 @@ var STEPS = [
         "Wash \u00D73: +180 \u00B5L 80% EtOH to sample while on magnet without disturbing beads. Wait for 1 minute and remove all supernatant",
         "Take smaller pipette set to 10-20\u00B5L and remove excess EtOH",
         "Dry 1\u20133 min. Until matte, not glossy. Do not overdry",
-        "Remove from magnet and add +19 \u00B5L nfH\u2082O to resuspend the bead pellet."
+        "Remove from magnet and add +19 \u00B5L nfH\u2082O to resuspend the bead pellet.",
         "Incubate 5 min RT \u2192 Quick spin and place on magnet for 2 minutes.",
         "transfer 17 \u00B5L of eluate to the tube containing 17 \u00B5L diluted EA."
       ]},
