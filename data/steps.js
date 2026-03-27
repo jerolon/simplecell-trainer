@@ -306,19 +306,22 @@ var STEPS = [
     icon: "\u2705", color: "#22d3ee",
     summary: "Final SPRI (100 \u00B5L EtOH washes). Library QC & sequencing.",
     details: [
-      { sub: "14A", title: "Final Clean-up (RT)", steps: [
-        "+10 \u00B5L nfH\u2082O. +40 \u00B5L beads. Mix. 5 min.",
-        "Magnet \u2192 remove 70 \u00B5L",
-        "Wash \u00D73: +100 \u00B5L 80% EtOH (NOT 180!)",
-        "Dry 2\u20135 min. Elute: +20 \u00B5L nfH\u2082O \u2192 5 min \u2192 transfer 18 \u00B5L",
-        "Store: 4\u00B0C \u226424h | -20\u00B0C long-term"
+      { sub: "14A", title: "Final Clean-up (Room Temperature)", steps: [
+        "+10 \u00B5L nfH\u2082O tp Post indexing PCR reaction. \u2192 +40 \u00B5L beads. Mix. \u2192 Incubate 5 min RT.",
+        "Put on Magnet for 2 minutes or until supernatant clear \u2192 remove with pipettet set to 70 \u00B5L most supernatant",
+        "Wash \u00D73: +100 \u00B5L 80% EtOH (NOT 180!) While on magnet without disturbing beads \u2192 Wait 1 minute and remove all supernatant.",
+        "Set pipette to 10-20\u00B5L and remove excess EtOH",
+        "Dry 2\u20135 min until it is matte (not glossy). Do not overdry.",
+        "Remove tubes from magnet adn add +20 \u00B5L nfH\u2082O to resuspend pellet \u2192 Incubate 5 min RT \u2192 Place on magnet for 2 minutes.",
+        "Transfer 18 \u00B5L to new tube without beads. Beads can be discarded",
+        "Cover tubes of the ready to sequence libraries. Store: 4\u00B0C \u226424h | -20\u00B0C long-term"
       ]},
       { sub: "14B", title: "Library QC & Sequencing", steps: [
         "1 \u00B5L on TapeStation or Fragment Analyzer. Expected: 600\u2013800 bp.",
         "Quantify by qPCR.",
         "Load: AVITI 600 pM | NextSeq 2000 1.4 nM | NovaSeq 6000 300 pM | NovaSeq X 150 pM",
         "2% PhiX spike-in",
-        "R1 92cy \u00B7 I1 10cy \u00B7 I2 10cy \u00B7 R2 26cy",
+        "Read1 92cy \u00B7 I1 10cy \u00B7 I2 10cy \u00B7 Read2 26cy",
         "30,000 reads/cell. Output: Count Matrix + Assay QC."
       ]}
     ],
