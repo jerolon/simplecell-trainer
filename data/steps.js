@@ -260,19 +260,25 @@ var STEPS = [
     icon: "\u{1F3AF}", color: "#ec4899",
     summary: "Double-sided SPRI size selection, then EA bead enrichment.",
     details: [
-      { sub: "12A", title: "Size Selection (RT)", steps: [
-        "+60 \u00B5L nfH\u2082O. +50 \u00B5L beads. Mix 10\u00D7. 5 min RT.",
-        "\u26A0 KEEP 145 \u00B5L SUPERNATANT \u2192 new tubes",
-        "+20 \u00B5L beads to sup. Mix. 5 min. Magnet \u2192 discard sup.",
-        "Wash \u00D73: +180 \u00B5L 80% EtOH. Dry 1\u20133 min.",
-        "Elute: +19 \u00B5L nfH\u2082O \u2192 5 min \u2192 transfer 17 \u00B5L"
+      { sub: "12A", title: "Size Selection (Room Temperature)", steps: [
+        "+60 \u00B5L nfH\u2082O to the sample from Amplification Step. +50 \u00B5L DNA purification beads. Mix 10\u00D7. Incubate 5 min RT.",
+        "Put tube on magnet for 2 minutes or until supernatant is clear",
+        "\u26A0 KEEP 145 \u00B5L SUPERNATANT \u2192 new PCR tubes",
+        "Off magnet: +20 \u00B5L DNA purification beads beads to the 145 \u00B5L SUPERNATANT. Mix well. Incubate 5 min RT. Magnet 2 minutes or until supernatant is clear",
+        "Carefully remove supernatant with pipette 150 \u00B5L and discard most supernatant.", 
+        "Wash \u00D73: +180 \u00B5L 80% EtOH to sample while on magnet without disturbing beads. Wait for 1 minute and remove all supernatant",
+        "Take smaller pipette set to 10-20\u00B5L and remove excess EtOH",
+        "Dry 1\u20133 min. Until matte, not glossy. Do not overdry",
+        "Remove from magnet and add +19 \u00B5L nfH\u2082O to resuspend the bead pellet."
+        "Incubate 5 min RT \u2192 Quick spin and place on magnet for 2 minutes.",
+        "transfer 17 \u00B5L of eluate to the tube containing 17 \u00B5L diluted EA."
       ]},
       { sub: "12B", title: "Library Enrichment", steps: [
         "17 \u00B5L eluate + 17 \u00B5L diluted EA. Mix 10\u00D7.",
         "Incubate 15 min RT \u2014 mix 10\u00D7 every 5 min!",
-        "+116 \u00B5L dPBS. Mix 10\u00D7. Magnet \u2192 remove all.",
-        "Wash \u00D72: +150 \u00B5L dPBS \u2192 1 min \u2192 remove",
-        "Off magnet: +27 \u00B5L nfH\u2082O = Enriched Library."
+        "+116 \u00B5L dPBS. Mix 10\u00D7. Magnet 2 minutes or until supernatant clear \u2192 With pipette to 150 \u00B5L remove all supernatant.",
+        "Wash \u00D72: Keeping tube on magnet +150 \u00B5L dPBS \u2192 1 min \u2192 remove 150 \u00B5L without removing beads. Discard all supernatant",
+        "Tubes Off magnet: +27 \u00B5L nfH\u2082O = Resuspend the bead pellet containing Enriched Library."
       ]}
     ],
     criticalNotes: [
@@ -284,12 +290,14 @@ var STEPS = [
   {
     id: 13, name: "Indexing PCR (PCR2)", duration: "20 min", phase: "post",
     icon: "\u{1F3F7}\uFE0F", color: "#8b5cf6",
-    summary: "Add Illumina UDI indexes. Amplify with A1. 6/7 cycles.",
+    summary: "Add Illumina UDI indexes. Amplify with A1. 7 cycles.",
     thermoProgram: { name: "PCR2", vol: "40 \u00B5L", time: "15\u201320 min", steps: "98\u00B0C 45s \u2192 [98\u00B0C 15s \u2192 60\u00B0C 30s \u2192 72\u00B0C 30s] \u00D7 6/7 \u2192 72\u00B0C 1min \u2192 4\u00B0C" },
     details: [{ sub: null, title: "Procedure", steps: [
-      "Set PCR2: 6 cy (cell lines) or 7 (PBMCs)",
-      "Add 3 \u00B5L UDI to 27 \u00B5L Enriched Library. RECORD INDEX!",
-      "Add 10 \u00B5L A1. Mix 15\u00D7 at 30 \u00B5L. Run PCR2."
+      "Start PCR2: 7 cycles for primary cells",
+      "Quck spin Illumina UDIs (Accesory box -20°C",
+      "Determine which Index will be associated with each sample",
+      "Add 3 \u00B5L UDI to 27 \u00B5L Enriched Library Bead Mixture. RECORD INDEX!. Place samples on Ice or Cold Block",
+      "Quick spin A1. Add 10 \u00B5L A1. Mix 15\u00D7 with pipette set at 30 \u00B5L. Cover tubes with lids, transfer to thermocycler and Run PCR2."
     ]}],
     criticalNotes: ["6 cy cell lines, 7 cy PBMCs","Record index \u2192 sample mapping!"]
   },
