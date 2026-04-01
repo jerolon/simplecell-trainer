@@ -60,8 +60,8 @@ var QUESTIONS = [
 
   // ─── HARD (diff: 3) ──────────────────────────────────────────────
 
-  {q:"TRB ramp 55\u219240\u00B0C?",a:"1\u00B0C per 6 seconds (90s)",wrong:["1\u00B0C/9s","2.5\u00B0C/min","1\u00B0C/3s"],diff:3,cat:"thermo",hint:"First (faster) TRB ramp.",step:[3]},
-  {q:"TRB ramp 35\u219220\u00B0C?",a:"1\u00B0C per 9 seconds (135s)",wrong:["1\u00B0C/6s","2.5\u00B0C/min","1\u00B0C/12s"],diff:3,cat:"thermo",hint:"Second (slower) TRB ramp.",step:[3]},
+  {q:"TRB ramp 55\u219240\u00B0C?",a:"1\u00B0C per 6 seconds (90s)",wrong:["1\u00B0C per 9 seconds (135s)","2.5\u00B0C per minute (6 min)","1\u00B0C per 3 seconds (45s)"],diff:3,cat:"thermo",hint:"First (faster) TRB ramp.",step:[3]},
+  {q:"TRB ramp 35\u219220\u00B0C?",a:"1\u00B0C per 9 seconds (135s)",wrong:["1\u00B0C per 6 seconds (90s)","2.5\u00B0C per minute (6 in)","1\u00B0C per 12 seconds (3 min)"],diff:3,cat:"thermo",hint:"Second (slower) TRB ramp.",step:[3]},
   {q:"3S program ramp rate?",a:"2.5\u00B0C/min (75\u219220\u00B0C in 22 min)",wrong:["1\u00B0C/6s (55\u219240\u00B0C in 90 sec)","1\u00B0C/9s (35\u219220\u00B0C in 135 sec)","5\u00B0C/min"],diff:3,cat:"thermo",hint:"55\u00B0C drop in 22 min.",step:[7]},
   {q:"How is 6\u00D7 CPM prepared?",a:"200 \u00B5L ice-cold dPBS into lyophilized tube, vortex 30s",wrong:["Dilute 1:6 in nfH\u2082O","200 \u00B5L warm dPBS","200 \u00B5L KCB"],diff:3,cat:"reagent",hint:"Step 1D sub-step 5. Powder.",step:[1]},
   {q:"1.5\u00D7 CPM dilution (organoids)?",a:"30 \u00B5L 6\u00D7 + 90 \u00B5L ice-cold dPBS",wrong:["25 \u00B5L 6\u00D7 + 100 \u00B5L","20 \u00B5L 6\u00D7 + 100 \u00B5L ice-cold dPBS","40 \u00B5L 6\u00D7 + 80 \u00B5L ice-cold dPBS"],diff:3,cat:"reagent",hint:"1\u00D7=20+100, 2\u00D7=40+80. 1.5\u00D7=?",step:[1]},
