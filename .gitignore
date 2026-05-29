@@ -1,0 +1,20 @@
+# HTML5 UP source templates — design reference only, not part of the site.
+# Any asset actually used is copied into assets/ and committed from there.
+html5up-big-picture/
+html5up-fractal/
+html5up-spectral/
+
+# Local scratch / backups
+.local-backup-pre-clone/
+
+# Build / tooling artifacts
+__pycache__/
+*.pyc
+
+# Local Claude Code settings (machine-specific)
+.claude/settings.local.json
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*~

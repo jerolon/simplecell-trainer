@@ -12,7 +12,7 @@
 var STEPS = [
   {
     id: 1, name: "Cell Priming & Pairing", duration: "1h 45min", phase: "pre",
-    icon: "\u{1F9EB}", color: "#4ade80",
+    icon: "\u{1F9EB}", color: "#38bdf8",
     summary: "Coat plates, prepare CPair beads, make KCB master mix, prime cells with CPM, pair cells with CPair beads in flat-bottom plates.",
     reagentTable: {
       title: "Reagent Preparations",
@@ -77,7 +77,7 @@ var STEPS = [
   },
   {
     id: 2, name: "Kinetic Confinement", duration: "45 min", phase: "pre",
-    icon: "\u2744\uFE0F", color: "#60a5fa",
+    icon: "\u2744\uFE0F", color: "#22d3ee",
     summary: "Disrupt settled cell-bead mix, combine with viscous KCB master mix, flash-freeze on dry ice.",
     details: [
       { sub: null, title: "Procedure",
@@ -98,7 +98,7 @@ var STEPS = [
   },
   {
     id: 3, name: "Barcoding & RNA Capture", duration: "45 min", phase: "pre",
-    icon: "\u{1F9EC}", color: "#f472b6",
+    icon: "\u{1F9EC}", color: "#2dd4bf",
     summary: "Prepare master mixes, run TRB on frozen samples, add DB to capture barcoded RNA on beads.",
     reagentTable: { title: "Reagent Setup", rows: [
       ["DB","4\u00B0C \u2192 ice","Do NOT vortex"],
@@ -141,7 +141,7 @@ var STEPS = [
   },
   {
     id: 4, name: "Post-Capture Bead Clean-up", duration: "10 min", phase: "pre",
-    icon: "\u{1F9F9}", color: "#a78bfa",
+    icon: "\u{1F9F9}", color: "#34d399",
     summary: "Wash beads: WA off-magnet, then 2\u00D7 WB on-magnet.",
     details: [{ sub: null, title: "Procedure", steps: [
       "With tubes On magnet: carefully remove 180 \u00B5L sup without disturbing or touching the beads \u2192 remove ~20 \u00B5L residual",
@@ -155,7 +155,7 @@ var STEPS = [
   },
   {
     id: 5, name: "Reverse Transcription", duration: "45 min", phase: "pre",
-    icon: "\u{1F504}", color: "#fbbf24",
+    icon: "\u{1F504}", color: "#4ade80",
     summary: "Add RT master mix to cleaned beads on ice, run RT program.",
     thermoProgram: { name: "RT", vol: "20 \u00B5L", time: "~40 min", steps: "20\u00B0C 2min \u2192 30\u00B0C 2min \u2192 40\u00B0C 2min \u2192 50\u00B0C 15min \u2192 55\u00B0C 15min \u2192 98\u00B0C 3min \u2192 4\u00B0C hold" },
     details: [{ sub: null, title: "Procedure", steps: [
@@ -167,7 +167,7 @@ var STEPS = [
   },
   {
     id: 6, name: "RNaseH Treatment", duration: "30 min", phase: "pre",
-    icon: "\u2702\uFE0F", color: "#fb923c",
+    icon: "\u2702\uFE0F", color: "#a3e635",
     summary: "Add RNaseH to digest RNA strand of RNA:cDNA hybrids.",
     thermoProgram: { name: "RNAH", vol: "22 \u00B5L", time: "~25 min", steps: "37\u00B0C 20min \u2192 65\u00B0C 5min \u2192 4\u00B0C hold" },
     details: [{ sub: null, title: "Procedure", steps: [
@@ -180,7 +180,7 @@ var STEPS = [
   },
   {
     id: 7, name: "Second Strand Synthesis", duration: "30 min", phase: "pre",
-    icon: "\u{1F9EA}", color: "#34d399",
+    icon: "\u{1F9EA}", color: "#fbbf24",
     summary: "Add 3S master mix to generate double-stranded cDNA.",
     masterMixes: [{ name: "3S MM (10 \u00B5L)", per1: "S1A 6.7 + S1B 2.7 + S2 0.6 \u00B5L", per8: "S1A 59 + S1B 23.8 + S2 5.3 (+10%)", note: "Vortex S1A, S1B. Do NOT vortex S2." }],
     thermoProgram: { name: "3S", vol: "32 \u00B5L", time: "22\u201325 min", steps: "75\u00B0C \u2192 20\u00B0C ramp (2.5\u00B0C/min = 22 min) \u2192 4\u00B0C hold" },
@@ -198,7 +198,7 @@ var STEPS = [
   },
   {
     id: 8, name: "Proteinase K Treatment", duration: "30 min", phase: "pre",
-    icon: "\u{1F513}", color: "#e879f9",
+    icon: "\u{1F513}", color: "#fb923c",
     summary: "Add Proteinase K to release cDNA from beads??.",
     thermoProgram: { name: "PK", vol: "33 \u00B5L", time: "~25 min", steps: "37\u00B0C 15min \u2192 55\u00B0C 10min \u2192 4\u00B0C hold" },
     details: [{ sub: null, title: "Procedure", steps: [
@@ -211,7 +211,7 @@ var STEPS = [
   },
   {
     id: 9, name: "Post-3S Clean-up (SPRI)", duration: "25 min", phase: "pre",
-    icon: "\u{1F4A7}", color: "#38bdf8",
+    icon: "\u{1F4A7}", color: "#f87171",
     summary: "SPRI purification. 80% EtOH \u00D73. Elute 30 \u00B5L \u2192 transfer 28 \u00B5L.",
     masterMixes: [{ name: "80 % EtOH (15 mL)", per8: "12 mL 100% Ethanol + 3 mL nfH20", note: "\u26A0 Prepare Fresh!!" }],
     details: [{ sub: null, title: "Procedure (Room Temperature)", steps: [
@@ -230,7 +230,7 @@ var STEPS = [
   },
   {
     id: 10, name: "Amplification PCR (PCR1)", duration: "30 min", phase: "post",
-    icon: "\u{1F4C8}", color: "#f97316",
+    icon: "\u{1F4C8}", color: "#38bdf8",
     summary: "PCR amplify cDNA. 12 cy (cell lines) or 13 cy (Primary cells).",
     masterMixes: [{ name: "Amp PCR MM (12 \u00B5L)", per1: "A1 10 + A2 2 \u00B5L", per8: "A1 88 + A2 17.6 (+10%)", note: "\u26A0 Keep A1 for PCR2!" }],
     thermoProgram: { name: "PCR1", vol: "40 \u00B5L", time: "25\u201330 min", steps: "98\u00B0C 45s \u2192 [98\u00B0C 15s \u2192 60\u00B0C 30s \u2192 72\u00B0C 30s] \u00D7 12/13 \u2192 72\u00B0C 1min \u2192 4\u00B0C" },
@@ -245,7 +245,7 @@ var STEPS = [
   },
   {
     id: 11, name: "Enrichment Beads Prep", duration: "10 min", phase: "post",
-    icon: "\u{1F9F2}", color: "#a3e635",
+    icon: "\u{1F9F2}", color: "#2dd4bf",
     summary: "Dilute EA 1:1 with dPBS. Aliquot 17 \u00B5L/sample.",
     masterMixes: [{ name: "Diluted EA", per1: "10 \u00B5L EA + 10 \u00B5L dPBS", per8: "88 + 88 (+10%)", note: "Aliquot 17 \u00B5L/sample at RT." }],
     details: [{ sub: null, title: "Procedure", steps: [
@@ -257,7 +257,7 @@ var STEPS = [
   },
   {
     id: 12, name: "Size Selection & Enrichment", duration: "1h", phase: "post",
-    icon: "\u{1F3AF}", color: "#ec4899",
+    icon: "\u{1F3AF}", color: "#4ade80",
     summary: "Double-sided SPRI size selection, then EA bead enrichment.",
     details: [
       { sub: "12A", title: "Size Selection (Room Temperature)", steps: [
@@ -289,7 +289,7 @@ var STEPS = [
   },
   {
     id: 13, name: "Indexing PCR (PCR2)", duration: "20 min", phase: "post",
-    icon: "\u{1F3F7}\uFE0F", color: "#8b5cf6",
+    icon: "\u{1F3F7}\uFE0F", color: "#fb923c",
     summary: "Add Illumina UDI indexes. Amplify with A1. 7 cycles.",
     thermoProgram: { name: "PCR2", vol: "40 \u00B5L", time: "15\u201320 min", steps: "98\u00B0C 45s \u2192 [98\u00B0C 15s \u2192 60\u00B0C 30s \u2192 72\u00B0C 30s] \u00D7 6/7 \u2192 72\u00B0C 1min \u2192 4\u00B0C" },
     details: [{ sub: null, title: "Procedure", steps: [
@@ -303,7 +303,7 @@ var STEPS = [
   },
   {
     id: 14, name: "Post-Indexing Clean-up & QC", duration: "25 min", phase: "post",
-    icon: "\u2705", color: "#22d3ee",
+    icon: "\u2705", color: "#f472b6",
     summary: "Final SPRI (100 \u00B5L EtOH washes). Library QC & sequencing.",
     details: [
       { sub: "14A", title: "Final Clean-up (Room Temperature)", steps: [
