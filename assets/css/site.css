@@ -79,7 +79,7 @@ h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; }
   padding: 22px 20px;
   border-bottom: 1px solid var(--border);
 }
-.brand-mark { font-size: 28px; line-height: 1; filter: drop-shadow(0 0 10px rgba(43,214,198,.5)); }
+.brand-mark { font-size: 28px; line-height: 1; color: var(--teal); filter: drop-shadow(0 0 10px rgba(43,214,198,.5)); }
 .brand-text {
   font-family: var(--display);
   font-weight: 900; font-size: 16px; letter-spacing: 2px;
@@ -110,7 +110,7 @@ h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; }
 .side-step:focus-visible { background: color-mix(in srgb, var(--c) 22%, transparent); border-left-color: var(--c); color: var(--text); }
 .side-step:target { background: color-mix(in srgb, var(--c) 28%, transparent); border-left-color: var(--c); color: var(--text); }
 .ss-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 7px color-mix(in srgb, var(--c) 70%, transparent); flex: none; }
-.ss-icon { font-size: 14px; flex: none; }
+.ss-icon { font-size: 14px; flex: none; color: var(--c); }
 .ss-id { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--c); flex: none; }
 .ss-name { font-size: 12.5px; line-height: 1.25; }
 
@@ -194,7 +194,7 @@ h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; }
   background: radial-gradient(ellipse at 50% -10%, rgba(43,214,198,.12), transparent 60%);
 }
 .panel--hero .panel-inner { width: 100%; }
-.hero-mark { font-size: 66px; margin-bottom: 16px; filter: drop-shadow(0 0 26px rgba(43,214,198,.45)); }
+.hero-mark { font-size: 66px; margin-bottom: 16px; color: var(--teal); filter: drop-shadow(0 0 26px rgba(43,214,198,.45)); }
 .hero-title {
   font-family: var(--display);
   font-weight: 900; text-transform: uppercase; letter-spacing: -.01em;
@@ -262,7 +262,7 @@ h1, h2, h3, h4 { font-family: var(--display); line-height: 1.15; }
   background: color-mix(in srgb, var(--c) 7%, transparent);
   border-bottom: 1px solid var(--border);
 }
-.step-icon { font-size: 22px; }
+.step-icon { font-size: 22px; color: var(--c); }
 .step-id { font-family: var(--mono); font-weight: 700; font-size: 13px; color: var(--c); }
 .phase-tag { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 2px 8px; border-radius: 99px; text-transform: uppercase; }
 .phase-pre  { background: rgba(152,197,147,.18); color: var(--green); }

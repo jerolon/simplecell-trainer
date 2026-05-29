@@ -42,6 +42,27 @@ def slug(key: str) -> str:
     return s or "x"
 
 
+def icon(name: str, extra: str = "") -> str:
+    """Render a Font Awesome 5 solid (free) icon as decorative markup."""
+    cls = f"fas {name}" + (f" {extra}" if extra else "")
+    return f'<i class="{cls}" aria-hidden="true"></i>'
+
+
+# Inline emoji that appear inside free-text protocol content (handling notes,
+# critical notes, master-mix notes). esc()/linkify() leave these characters
+# untouched, so we swap them for Font Awesome icons after escaping.
+_INLINE_ICONS = {
+    "⚠️": icon("fa-exclamation-triangle"),
+    "⚠": icon("fa-exclamation-triangle"),
+}
+
+
+def iconify(escaped: str) -> str:
+    for emoji, markup in _INLINE_ICONS.items():
+        escaped = escaped.replace(emoji, markup)
+    return escaped
+
+
 def build_reagent_slugs(reagent_db):
     slugs = {}
     seen = {}
@@ -90,14 +111,14 @@ def render_reagent_layer(reagent_db, slugs):
         out.append('<div class="reagent-panel">')
         out.append(f'<label class="reagent-backdrop" for="{cb}" aria-label="Close"></label>')
         out.append(f'<aside class="reagent-card" role="dialog" aria-label="{attr(key)}">')
-        out.append(f'<label class="reagent-close" for="{cb}" aria-label="Close">&#10005;</label>')
+        out.append(f'<label class="reagent-close" for="{cb}" aria-label="Close">{icon("fa-times")}</label>')
         out.append(f'<h3 class="reagent-name">{esc(key)}</h3>')
         if r.get("fullName"):
             out.append(f'<p class="reagent-full">{esc(r["fullName"])}</p>')
         if r.get("link"):
             out.append(
                 f'<a class="reagent-link" href="{attr(r["link"])}" target="_blank" '
-                f'rel="noopener noreferrer">&#128279; More info &#8594;</a>'
+                f'rel="noopener noreferrer">{icon("fa-link")} More info &#8594;</a>'
             )
         if r.get("image"):
             out.append(f'<img class="reagent-img" src="{attr(r["image"])}" alt="{attr(key)}" loading="lazy">')
@@ -114,7 +135,7 @@ def render_reagent_layer(reagent_db, slugs):
             out.append('<h4 class="reagent-subhead">Handling</h4>')
             out.append('<ul class="reagent-handling">')
             for h in r["handling"]:
-                out.append(f"<li>{esc(h)}</li>")
+                out.append(f"<li>{iconify(esc(h))}</li>")
             out.append("</ul>")
         sc = r.get("scaling")
         if sc:
@@ -137,7 +158,7 @@ def render_reagent_layer(reagent_db, slugs):
 def render_thermo(prog):
     return (
         '<div class="thermo">'
-        f'<div class="thermo-head">&#127777;&#65039; {esc(prog["name"])} '
+        f'<div class="thermo-head">{icon("fa-thermometer-half")} {esc(prog["name"])} '
         f'<span class="thermo-meta">Vol: {esc(prog["vol"])} &middot; ~{esc(prog["time"])}</span></div>'
         f'<pre class="thermo-steps">{esc(prog["steps"])}</pre>'
         "</div>"
@@ -153,10 +174,10 @@ def render_mastermixes(mixes):
         if m.get("per8"):
             lines.append(f'<div class="mm-line"><span>8&times;</span> {esc(m["per8"])}</div>')
         if m.get("note"):
-            lines.append(f'<div class="mm-note">{esc(m["note"])}</div>')
+            lines.append(f'<div class="mm-note">{iconify(esc(m["note"]))}</div>')
         out.append(
             '<div class="mm">'
-            f'<div class="mm-name">&#129514; {esc(m["name"])}</div>'
+            f'<div class="mm-name">{icon("fa-flask")} {esc(m["name"])}</div>'
             + "".join(lines)
             + "</div>"
         )
@@ -183,7 +204,7 @@ def render_step(step, linkify):
     phase_label = "PRE-PCR" if phase == "pre" else "POST-PCR"
     parts.append(
         '<div class="step-summary">'
-        f'<span class="step-icon">{esc(step["icon"])}</span>'
+        f'<span class="step-icon">{icon(attr(step["icon"]))}</span>'
         f'<span class="step-id">STEP {sid}</span>'
         f'<span class="phase-tag phase-{attr(phase)}">{phase_label}</span>'
         f'<span class="step-name">{esc(step["name"])}</span>'
@@ -211,18 +232,18 @@ def render_step(step, linkify):
             )
         parts.append('<ol class="detail-steps">')
         for line in sec["steps"]:
-            parts.append(f"<li>{linkify(line)}</li>")
+            parts.append(f"<li>{iconify(linkify(line))}</li>")
         parts.append("</ol></div>")
 
     if step.get("criticalNotes"):
-        parts.append('<div class="critical"><div class="critical-head">&#9888; Critical notes</div><ul>')
+        parts.append(f'<div class="critical"><div class="critical-head">{icon("fa-exclamation-triangle")} Critical notes</div><ul>')
         for note in step["criticalNotes"]:
-            parts.append(f"<li>{linkify(note)}</li>")
+            parts.append(f"<li>{iconify(linkify(note))}</li>")
         parts.append("</ul></div>")
 
     parts.append(
         f'<a class="btn-test" href="#quiz" data-step="{sid}">'
-        f'&#9889; Test me on Step {sid}</a>'
+        f'{icon("fa-bolt")} Test me on Step {sid}</a>'
     )
     parts.append("</div></section>")
     return "\n".join(parts)
@@ -262,7 +283,7 @@ def render_hero(steps, n_questions, n_ordering):
     return f"""
 <section id="overview" class="panel panel--hero">
   <div class="panel-inner">
-    <div class="hero-mark">&#129516;</div>
+    <div class="hero-mark">{icon("fa-dna")}</div>
     <h1 class="hero-title">SimpleCell Protocol Trainer</h1>
     <p class="hero-sub">Master the CS Genetics 3&#8242; Gene Expression Assay &mdash;
        a single-cell library prep without droplets or wells.</p>
@@ -273,8 +294,8 @@ def render_hero(steps, n_questions, n_ordering):
       <div class="stat"><span class="stat-n">2</span><span class="stat-l">Phases</span></div>
     </div>
     <div class="hero-cta">
-      <a class="btn btn-primary" href="#steps">&#128214; Study the protocol</a>
-      <a class="btn btn-ghost" href="#quiz">&#9889; Challenge mode</a>
+      <a class="btn btn-primary" href="#steps">{icon("fa-book-open")} Study the protocol</a>
+      <a class="btn btn-ghost" href="#quiz">{icon("fa-bolt")} Challenge mode</a>
     </div>
   </div>
 </section>"""
@@ -385,8 +406,8 @@ def render_quiz(questions, ordering, linkify):
         out.append("</ol>")
         out.append(
             '<details class="q-reveal"><summary>Show answer &amp; hint</summary>'
-            f'<p class="q-answer">&#10003; {esc(q["a"])}</p>'
-            + (f'<p class="q-hint">&#128161; {esc(q["hint"])}</p>' if q.get("hint") else "")
+            f'<p class="q-answer">{icon("fa-check")} {esc(q["a"])}</p>'
+            + (f'<p class="q-hint">{icon("fa-lightbulb")} {esc(q["hint"])}</p>' if q.get("hint") else "")
             + "</details>"
         )
         out.append("</li>")
@@ -408,7 +429,7 @@ def render_quiz(questions, ordering, linkify):
         if q.get("hint"):
             out.append(
                 '<details class="q-reveal"><summary>Show hint</summary>'
-                f'<p class="q-hint">&#128161; {esc(q["hint"])}</p></details>'
+                f'<p class="q-hint">{icon("fa-lightbulb")} {esc(q["hint"])}</p></details>'
             )
         out.append("</li>")
     out.append("</ol>")
@@ -440,7 +461,7 @@ def render_sidebar(steps):
         rows = "".join(
             f'<a class="side-step" href="#step-{s["id"]}" style="--c:{attr(s["color"])}">'
             f'<span class="ss-dot" aria-hidden="true"></span>'
-            f'<span class="ss-icon">{esc(s["icon"])}</span>'
+            f'<span class="ss-icon">{icon(attr(s["icon"]))}</span>'
             f'<span class="ss-id">{s["id"]:02d}</span>'
             f'<span class="ss-name">{esc(s["name"])}</span></a>'
             for s in items
@@ -451,7 +472,7 @@ def render_sidebar(steps):
 <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
 <nav id="sidebar" class="sidebar">
   <a class="brand" href="#overview">
-    <span class="brand-mark">&#129516;</span>
+    <span class="brand-mark">{icon("fa-dna")}</span>
     <span class="brand-text">SIMPLECELL<br><small>TRAINER</small></span>
   </a>
   <div class="side-steps">{nav}</div>
@@ -517,6 +538,7 @@ def build():
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;600;700;900&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
 <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>

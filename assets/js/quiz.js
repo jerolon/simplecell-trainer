@@ -54,7 +54,7 @@
     { min: 150,  title: "Protocol Pro" },
     { min: 350,  title: "Assay Expert" },
     { min: 600,  title: "Single-Cell Wizard" },
-    { min: 1000, title: "Protocol Master 🧬" }
+    { min: 1000, title: 'Protocol Master <i class="fas fa-dna" aria-hidden="true"></i>' }
   ];
   function levelFor(xp) {
     var i = LEVELS.length - 1;
@@ -100,7 +100,7 @@
       '<span>Accuracy <b class="s-acc">&mdash;</b></span>' +
     '</div>' +
     '<div class="step-badge" hidden><span class="step-badge-text"></span>' +
-      '<button type="button" class="clear-step">&#10005; All steps</button></div>' +
+      '<button type="button" class="clear-step"><i class="fas fa-times" aria-hidden="true"></i> All steps</button></div>' +
     '<div class="hud-filter">' +
       '<button type="button" class="diff-btn is-on" data-diff="0">All</button>' +
       '<button type="button" class="diff-btn" data-diff="1">Easy</button>' +
@@ -134,7 +134,7 @@
 
   function syncHud() {
     var lv = levelFor(state.xp);
-    ui.lvl.textContent = "Lv." + lv.level + " " + lv.title;
+    ui.lvl.innerHTML = "Lv." + lv.level + " " + lv.title;
     var pct = lv.next ? ((state.xp - lv.prev) / (lv.next - lv.prev)) * 100 : 100;
     ui.bar.style.width = Math.max(0, Math.min(100, pct)) + "%";
     ui.xp.textContent = state.xp + " XP";
@@ -162,7 +162,7 @@
   function levelToast(title) {
     var t = document.createElement("div");
     t.className = "level-toast";
-    t.innerHTML = '<div class="emoji">🎉</div>' +
+    t.innerHTML = '<div class="emoji"><i class="fas fa-trophy" aria-hidden="true"></i></div>' +
       '<div class="lvl-label">Level up!</div>' +
       '<div class="lvl-title">' + title + '</div>';
     document.body.appendChild(t);
@@ -226,7 +226,7 @@
       (q.cat ? '<span class="q-tag cat">' + q.cat.toUpperCase() + '</span>' : '') + '</div>' +
       '<p class="q-text">' + escapeHtml(q.q) + '</p>';
     if (q.hint) {
-      html += '<button type="button" class="hint-btn">💡 Show hint</button>' +
+      html += '<button type="button" class="hint-btn"><i class="fas fa-lightbulb" aria-hidden="true"></i> Show hint</button>' +
               '<div class="hint-box" hidden>' + escapeHtml(q.hint) + '</div>';
     }
     html += '<div class="opts"></div>';
@@ -249,7 +249,7 @@
         var open = box.hidden;
         box.hidden = !open;
         hintBtn.classList.toggle("is-on", open);
-        hintBtn.innerHTML = (open ? "💡 Hide hint" : "💡 Show hint");
+        hintBtn.innerHTML = (open ? "<i class='fas fa-lightbulb' aria-hidden='true'></i> Hide hint" : "<i class='fas fa-lightbulb' aria-hidden='true'></i> Show hint");
       });
     }
   }
@@ -275,7 +275,7 @@
       '<span class="q-tag cat">ORDERING</span></div>' +
       '<p class="q-text">' + escapeHtml(o.q) + '</p>';
     if (o.hint) {
-      html += '<button type="button" class="hint-btn">💡 Show hint</button>' +
+      html += '<button type="button" class="hint-btn"><i class="fas fa-lightbulb" aria-hidden="true"></i> Show hint</button>' +
               '<div class="hint-box" hidden>' + escapeHtml(o.hint) + '</div>';
     }
     html += '<p style="font-size:12px;color:var(--dim);margin-bottom:12px">Use the arrows to reorder, then check.</p>' +
@@ -313,7 +313,7 @@
         var open = box.hidden;
         box.hidden = !open;
         hintBtn.classList.toggle("is-on", open);
-        hintBtn.innerHTML = (open ? "💡 Hide hint" : "💡 Show hint");
+        hintBtn.innerHTML = (open ? "<i class='fas fa-lightbulb' aria-hidden='true'></i> Hide hint" : "<i class='fas fa-lightbulb' aria-hidden='true'></i> Show hint");
       });
     }
 
